@@ -1,9 +1,10 @@
+require('dotenv').config()
 const express = require('express');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-const routes = require('./controllers')
+const routes = require('./controllers/index.js')
 
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/build')));
