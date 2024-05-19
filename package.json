@@ -1,0 +1,49 @@
+{
+    "name": "tokenapi-demo",
+    "version": "0.0.1",
+    "private": true,
+    "description": "Showcase Alchemy's Token API",
+    "scripts": {
+        "start": "node server/server.js",
+        "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm start\"",
+        "install": "cd server && npm i && cd ../client && npm i",
+        "build": "cd client && npm run build"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "engines": {
+        "node": "16.18.0"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "concurrently": "^5.1.0"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:DraconMarius/tokenapi-demo.git"
+    },
+    "author": "Mari K. Ma",
+    "license": "MIT",
+    "dependencies": {
+        "dotenv": "^8.2.0"
+    },
+    "bugs": {
+        "url": "https://github.com/DraconMarius/tokenapi-demo/issues"
+    },
+    "homepage": "https://github.com/DraconMarius/tokenapi-demo#readme"
+}
