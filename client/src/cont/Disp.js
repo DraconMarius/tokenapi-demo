@@ -14,6 +14,7 @@ function Disp() {
     const { searchParams } = useSearch();
     const [apiRes, setApiRes] = useState();
     const [loading, setLoading] = useState(false);
+    const [selectedIndex, setIndex] = useState()
 
 
     useEffect(() => {
@@ -50,29 +51,39 @@ function Disp() {
 
     return (
         <div className="container">
-            {(loading || !apiRes) ? <>Loading</> :
+            {(loading || !apiRes) ? <>Default</> :
                 <div className="container">
-                    <div className="container"> Current displaying Address:
-                        <FlapDisplay
-                            className="darBordered"
-                            chars={Presets.ALPHANUM + ',.!'}
-                            length={42}
-                            timing-={30}
-                            value={apiRes.wAddress} />
+                    Current displaying Address:
+                    <FlapDisplay
+                        className="darBordered"
+                        chars={Presets.ALPHANUM + ',.!'}
+                        length={42}
+                        timing={60}
+                        value={apiRes.wAddress} />
+                    <section className="hero is-medium">
+                        <div class="hero-body">
+                            {!(selectedIndex) ? <>Select Token below to see balance</> :
+                                <Token
+                                    contractAddress={apiRes.balances[selectedIndex].contractAddress}
+                                    name={apiRes.balances[selectedIndex].name}
+                                    symbol={apiRes.balances[selectedIndex].symbol || null}
+                                    balance={apiRes.balances[selectedIndex].balance}
+                                    logo={apiRes.balances[selectedIndex].logo || "https://placehold.co/48X48"}
+                                />
+
+                            }
+                        </div>
+                    </section>
+                    <div
+                        className="buttons">
+
+                        {apiRes.balances.map((token, index) => (
+
+                            <button className="tag" id={index} onClick={e => setIndex(e.target.id)}>{token.symbol}</button>
+
+                        )
+                        )}
                     </div>
-                    {apiRes.balances.map((token, index) => (
-                        <Token
-                            key={index}
-                            contractAddress={token.contractAddress}
-                            name={token.name}
-                            symbol={token.symbol || null}
-                            balance={token.balance}
-
-
-
-
-                        />
-                    ))}
                 </div>
             }
         </div >

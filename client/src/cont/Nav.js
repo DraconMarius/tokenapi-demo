@@ -7,7 +7,7 @@ import { useSearch } from './searchContext';
 
 
 function Nav() {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    // const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [address, setAddress] = useState('');
     const [net, setNet] = useState('Eth');
     const { searchParams, updateSearchParams } = useSearch()
@@ -70,6 +70,7 @@ function Nav() {
                 <div className="navbar-end">
                     <div className="navbar-item">
                         <input
+                            name="walletAdd"
                             className="input is-link"
                             type="text"
                             onChange={e => setAddress(e.target.value)}
