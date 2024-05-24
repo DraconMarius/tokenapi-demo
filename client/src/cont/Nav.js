@@ -36,10 +36,16 @@ function Nav() {
         document.getElementById('navbar').classList.toggle('is-active');
     }
 
+    useEffect(() => {
+        console.log(net);
+        console.log(address)
+    }, [net, address])
+
+
     return (
 
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
+        <nav className="navbar" role="navigation" aria-label="main navigation">
+            <div className="navbar-brand">
                 <a className="navbar-item" href="https://www.alchemy.com">
                     <img src={logo} alt="alchemylogo" />
                 </a>
@@ -63,26 +69,31 @@ function Nav() {
 
                 <div className="navbar-end">
                     <div className="navbar-item">
-                        <input class="input" type="text" placeholder="Normal input" />
-                        <div className="select">
-                            <select>
-                                <option>
+                        <input
+                            className="input is-link"
+                            type="text"
+                            onChange={e => setAddress(e.target.value)}
+                            placeholder={`Address` || searchParams.walletAdd}
+                        />
+                        <div className="select" >
+                            <select onChange={e => setNet(e.target.value)}>
+                                <option value="Eth">
                                     Ethereum
                                 </option>
 
-                                <option>
+                                <option value="Polygon">
                                     Polygon
                                 </option>
 
-                                <option>
+                                <option value="Arbitrum">
                                     Arbitrum
                                 </option>
 
-                                <option>
+                                <option value="Optimism">
                                     Optimism
                                 </option>
 
-                                <option>
+                                <option value="Base">
                                     Base
                                 </option>
                             </select>
@@ -91,14 +102,17 @@ function Nav() {
                     </div>
 
                     <div className="buttons navbar-item">
-                        <a className="button is-primary">
-                            <strong>Sign up</strong>
-                        </a>
+                        <button
+                            className="button is-primary"
+                            onClick={() => handleSearch(net, address)}
+                        >
+                            <strong>Search</strong>
+                        </button>
                     </div>
                 </div>
             </div>
 
-        </nav>
+        </nav >
     );
 
 
