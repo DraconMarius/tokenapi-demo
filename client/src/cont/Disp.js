@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useSearch } from './searchContext';
 
-import Token from '../comp/Token'
+import Balance from '../comp/Balance'
 import { FlapDisplay, Presets } from 'react-split-flap-effect'
 
 
@@ -10,7 +10,7 @@ import {
     getTokenBalance
 } from '../util/api';
 
-function Disp() {
+function Disp({ type }) {
     const { searchParams } = useSearch();
     const [apiRes, setApiRes] = useState();
     const [loading, setLoading] = useState(false);
@@ -51,7 +51,7 @@ function Disp() {
 
     return (
         <div className="container">
-            {(loading || !apiRes) ? <>Default</> :
+            {(loading || !apiRes) ? <>Loading...</> : (type == "balance") ?
                 <div className="container">
                     Current displaying Address:
                     <FlapDisplay
@@ -63,7 +63,7 @@ function Disp() {
                     <section className="hero is-medium">
                         <div class="hero-body">
                             {!(selectedIndex) ? <>Select Token below to see balance</> :
-                                <Token
+                                <Balance
                                     contractAddress={apiRes.balances[selectedIndex].contractAddress}
                                     name={apiRes.balances[selectedIndex].name}
                                     symbol={apiRes.balances[selectedIndex].symbol || null}
@@ -84,7 +84,8 @@ function Disp() {
                         )
                         )}
                     </div>
-                </div>
+                </div> :
+                <div> </div>
             }
         </div >
     )

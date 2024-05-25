@@ -4,9 +4,9 @@ import React, { useState, useEffect } from 'react';
 
 import { FlapDisplay, Presets } from 'react-split-flap-effect'
 
-import dropdown from '../assets/dropdown.png'
+// import dropdown from '../assets/dropdown.png'
 
-function Token({ contractAddress, name, symbol, balance, logo }) {
+function Balance({ contractAddress, name, symbol, balance, logo }) {
 
     const blankState = {
         network: '',
@@ -54,7 +54,7 @@ function Token({ contractAddress, name, symbol, balance, logo }) {
                             length={42}
                             timing={45}
                             hinge={true}
-                            value={`Balance:          ${balance}`} />
+                            value={`Balance:           ${balance}`} />
                     </div>
                 </div>
             </div>
@@ -73,4 +73,4 @@ function Token({ contractAddress, name, symbol, balance, logo }) {
 
 }
 
-export default Token;
+export default Balance;

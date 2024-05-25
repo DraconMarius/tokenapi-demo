@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
+import { Link } from 'react-router-dom'
+
 import logo from '../assets/alchemylogo.png';
 import Connect from '../comp/Connect';
 
@@ -60,11 +62,25 @@ function Nav() {
 
             <div id="navbar" className="navbar-menu">
                 <div className="navbar-start">
-                    <div className="navbar-item">
-                        <a className="navbar-item">
+                    <div className="navbar-item" >
+                        <a href={"/"}>
                             Home
                         </a>
                     </div>
+                    {searchParams.walletAdd ?
+                        <>
+                            <div className="navbar-item" >
+                                <a href={"/balances"}>
+                                    Balances
+                                </a>
+                            </div>
+                            <div className="navbar-item">
+                                <a href={"/transactions"}>
+                                    Tansactions
+                                </a>
+                            </div>
+                        </> : <></>
+                    }
                 </div>
 
                 <div className="navbar-end">
@@ -103,12 +119,13 @@ function Nav() {
                     </div>
 
                     <div className="buttons navbar-item">
-                        <button
+                        <Link
                             className="button is-primary"
+                            to="/balances"
                             onClick={() => handleSearch(net, address)}
                         >
                             <strong>Search</strong>
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
