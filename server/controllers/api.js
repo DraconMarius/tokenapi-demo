@@ -94,4 +94,78 @@ router.get('/balance/:net/:address', async (req, res) => {
     };
 })
 
+
+router.get('/transactions/:net/:address', async (req, res) => {
+
+    console.log('==============/Transactions/Total==============')
+
+    const chosenNet = req.params.net
+    const chosenConfig = configs[chosenNet];
+    console.log(chosenConfig)
+    const address = req.params.address;
+    const pageKey = req.query.pgKey || undefined
+    const order = req.query.order || "desc"
+    const zero = req.query.order || false
+
+    const inboundParams = {
+        order: order,
+        toAddress: address,
+        excludeZeroValue: zero,
+        category: ["external"],
+        maxCount: 100,
+        pageKey: pageKey
+    }
+    const outboundParams = {
+        order: order,
+        fromAddress: address,
+        excludeZeroValue: zero,
+        category: ["external"],
+        maxCount: 100,
+        pageKey: pageKey
+    }
+
+
+    const fetchTransaction = async (chosenConfig, option,) => {
+
+        const params = (option === "outbound") ? outboundParams : inboundParams
+
+        const alchemy = new Alchemy(chosenConfig)
+
+        try {
+            const transactions = await alchemy.core.getAssetTransfers(params)
+
+            const nextPageKey = transactions.pageKey
+
+            console.log(transactions)
+
+            return {
+                res: transactions,
+                pageKey: nextPageKey
+            }
+
+        } catch (err) {
+            console.error(`Failed to fetch Transaction in function`, err);
+            return { error: err.message }
+        }
+    }
+
+    try {
+        const [outboundRes, inboundRes] = await Promise.all([
+            fetchTransaction(chosenConfig, "outbound"),
+            fetchTransaction(chosenConfig, "inbound")]
+        )
+        res.json({
+            net: chosenNet,
+            out: outboundRes,
+            in: inboundRes,
+        })
+
+    } catch (err) {
+        console.error("Failed to fetch Transactions @ Promise", err);
+        return { error: err.message }
+    }
+
+
+})
+
 module.exports = router;
