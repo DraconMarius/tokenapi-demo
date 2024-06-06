@@ -2,47 +2,52 @@ import React, { useState, useEffect } from 'react';
 
 import { useSearch } from './searchContext';
 
-import Balance from '../comp/Balance'
-import { FlapDisplay, Presets } from 'react-split-flap-effect'
+import TokenCont from './TokenCont'
+import TxCont from './TxCont'
 
 
 import {
-    getTokenBalance
+    getTokenBalance,
+    getTransactions
 } from '../util/api';
 
-function Disp({ type }) {
+function Disp() {
     const { searchParams } = useSearch();
+    const [type, setType] = useState(searchParams.type || "default")
     const [apiRes, setApiRes] = useState();
     const [loading, setLoading] = useState(false);
     const [selectedIndex, setIndex] = useState()
 
 
     useEffect(() => {
-        console.log("searchParams:", searchParams)
-
-
-        const fetchServer = async (searchParams) => {
-
-            try {
-                const data = await getTokenBalance(searchParams.network, searchParams.walletAdd)
-                // console.log(data)
-                return data;
-            } catch (err) {
-                console.error("Error fetching data: ", err)
-            };
-
-        };
-
-        const fetchData = async () => {
+        console.log("Disp useEffect triggered with:", searchParams);
+        async function fetchData() {
             setLoading(true);
-            const data = await fetchServer(searchParams)
-            setApiRes(data)
+            let data;
+            if (searchParams.type === "balance") {
+                data = await getTokenBalance(searchParams.network, searchParams.walletAdd);
+                console.log("Fetched data:", data);
+                setApiRes(data);
+                setType("balance")
+                setLoading(false);
+            } else if (searchParams.type === "transaction") {
+                data = await getTransactions(searchParams.network, searchParams.walletAdd);
+                console.log("Fetched data:", data);
+                setApiRes(data);
+                setType("transaction")
+                setLoading(false);
+            } else if (searchParams.type === (null || undefined)) {
+                setApiRes();
+                setType("default")
+                setLoading(false)
+            }
+
         }
-        if (searchParams.network && searchParams.walletAdd) {
-            fetchData()
+
+        if (searchParams.walletAdd && searchParams.network) {
+            fetchData();
         }
-        setLoading(false)
-    }, [searchParams])
+    }, [searchParams.type, searchParams.dir, searchParams, type]);
 
     useEffect(() => {
         console.log(apiRes);
@@ -51,41 +56,11 @@ function Disp({ type }) {
 
     return (
         <div className="container">
-            {(loading || !apiRes) ? <>Loading...</> : (type == "balance") ?
-                <div className="container">
-                    Current displaying Address:
-                    <FlapDisplay
-                        className="darBordered"
-                        chars={Presets.ALPHANUM + ',.!'}
-                        length={42}
-                        timing={60}
-                        value={apiRes.wAddress} />
-                    <section className="hero is-medium">
-                        <div class="hero-body">
-                            {!(selectedIndex) ? <>Select Token below to see balance</> :
-                                <Balance
-                                    contractAddress={apiRes.balances[selectedIndex].contractAddress}
-                                    name={apiRes.balances[selectedIndex].name}
-                                    symbol={apiRes.balances[selectedIndex].symbol || null}
-                                    balance={apiRes.balances[selectedIndex].balance}
-                                    logo={apiRes.balances[selectedIndex].logo || "https://placehold.co/48X48"}
-                                />
-
-                            }
-                        </div>
-                    </section>
-                    <div
-                        className="buttons">
-
-                        {apiRes.balances.map((token, index) => (
-
-                            <button className="tag" id={index} onClick={e => setIndex(e.target.id)}>{token.symbol}</button>
-
-                        )
-                        )}
-                    </div>
-                </div> :
-                <div> </div>
+            {(loading || !apiRes) ? <>Loading...</> : (type === "default") ? <>Default Search Screen</> :
+                (apiRes.error) ? <>{`ERROR fetching ${type} for ${searchParams.walletAdd} on ${searchParams.net}`}</> :
+                    (type === "balance") ?
+                        <TokenCont apiRes={apiRes} /> :
+                        <TxCont apiRes={apiRes} />
             }
         </div >
     )

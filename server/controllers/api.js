@@ -80,7 +80,7 @@ router.get('/balance/:net/:address', async (req, res) => {
             }
         } catch (err) {
             console.error(`Failed to fetch Balance`, err);
-            return { error: err.message }
+            throw new Error(err.message)
         }
     };
 
@@ -90,7 +90,7 @@ router.get('/balance/:net/:address', async (req, res) => {
         res.json(results);
     } catch (err) {
         console.log(err);
-        res.status(500).json(err);
+        res.status(500).json({ error: err.message });
     };
 })
 
@@ -103,7 +103,8 @@ router.get('/transactions/:net/:address', async (req, res) => {
     const chosenConfig = configs[chosenNet];
     console.log(chosenConfig)
     const address = req.params.address;
-    const pageKey = req.query.pgKey || undefined
+    const outpageKey = req.query.outpgKey || undefined
+    const inpageKey = req.query.inpgKey || undefined
     const order = req.query.order || "desc"
     const zero = req.query.order || false
 
@@ -111,21 +112,23 @@ router.get('/transactions/:net/:address', async (req, res) => {
         order: order,
         toAddress: address,
         excludeZeroValue: zero,
-        category: ["external"],
+        category: ["external", "erc20", "erc721", "erc1155", "specialnft"],
         maxCount: 100,
-        pageKey: pageKey
+        pageKey: inpageKey,
+        withMetadata: true
     }
     const outboundParams = {
         order: order,
         fromAddress: address,
         excludeZeroValue: zero,
-        category: ["external"],
+        category: ["external", "erc20", "erc721", "erc1155", "specialnft"],
         maxCount: 100,
-        pageKey: pageKey
+        pageKey: outpageKey,
+        withMetadata: true
     }
 
 
-    const fetchTransaction = async (chosenConfig, option,) => {
+    const fetchTransaction = async (chosenConfig, option) => {
 
         const params = (option === "outbound") ? outboundParams : inboundParams
 
@@ -136,7 +139,8 @@ router.get('/transactions/:net/:address', async (req, res) => {
 
             const nextPageKey = transactions.pageKey
 
-            console.log(transactions)
+            // console.log(transactions)
+
 
             return {
                 res: transactions,
@@ -150,19 +154,46 @@ router.get('/transactions/:net/:address', async (req, res) => {
     }
 
     try {
+        //order
+        const mergeAndSortTransactions = (outTransactions, inTransactions) => {
+            // Combine the two arrays
+            const combined = [...inTransactions.res.transfers, ...outTransactions.res.transfers];
+
+            // Sort combined array by timestamp, based on order in query
+            // most recent first
+            if (order === "desc") {
+                combined.sort((a, b) => new Date(b.metadata.blockTimestamp) - new Date(a.metadata.blockTimestamp));
+            } else {
+                //oldest first
+                combined.sort((a, b) => new Date(a.metadata.blockTimestamp) - new Date(b.metadata.blockTimestamp));
+            }
+            return combined;
+        };
+
         const [outboundRes, inboundRes] = await Promise.all([
             fetchTransaction(chosenConfig, "outbound"),
             fetchTransaction(chosenConfig, "inbound")]
         )
+
+        const keyObj = {
+            outboundKey: outboundRes.res.pageKey ? outboundRes.res.pageKey : null,
+            inboundKey: inboundRes.res.pageKey ? inboundRes.res.pageKey : null
+        }
+
+        const sortedRes = mergeAndSortTransactions(outboundRes, inboundRes)
+
+
         res.json({
             net: chosenNet,
-            out: outboundRes,
-            in: inboundRes,
+            wAddress: address,
+            [`${order}Res`]: sortedRes,
+            pageKey: keyObj
+
         })
 
     } catch (err) {
         console.error("Failed to fetch Transactions @ Promise", err);
-        return { error: err.message }
+        res.status(500).json({ error: err.message })
     }
 
 

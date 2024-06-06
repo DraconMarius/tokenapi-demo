@@ -7,9 +7,13 @@ export const SearchProvider = ({ children }) => {
     const [searchParams, setSearchParams] = useState({
         network: '',
         walletAdd: '',
+        zero: '',
         pageKey: '',
         prevKeys: [],
-        currentKey: ''
+        currentKey: '',
+        type: '',
+        dir: "desc",
+        zeroOpt: false
     });
 
     const updateSearchParams = (newParams) => {
