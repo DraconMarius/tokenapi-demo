@@ -23,8 +23,7 @@ function App() {
           <div className="container">
             <Routes>
               <Route exact path="/" element={<Default />} />
-              <Route exact path="/balances" element={<Disp type={"balance"} />} />
-              <Route exact path="/transactions" element={<Disp type={"transaction"} />} />
+              <Route exact path="/search" element={<Disp />} />
             </Routes>
           </div>
         </Router>

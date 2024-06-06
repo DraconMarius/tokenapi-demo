@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import logo from '../assets/alchemylogo.png';
 import Connect from '../comp/Connect';
@@ -13,24 +13,47 @@ function Nav() {
     const [address, setAddress] = useState('');
     const [net, setNet] = useState('Eth');
     const { searchParams, updateSearchParams } = useSearch()
+    const navigate = useNavigate();
 
     const blankState = {
         network: '',
         walletAdd: '',
+        zero: '',
         pageKey: '',
         prevKeys: [],
-        currentKey: ''
+        currentKey: '',
+        type: '',
+        dir: "desc",
+        zeroOpt: false
     }
 
-    const handleSearch = (network, address) => {
+    const handleSearch = async (network, address) => {
+
         const search = {
             ...blankState,
             network: network,
             walletAdd: address,
-            isNew: true
+            isNew: true,
+            type: "balance"
         }
-        updateSearchParams(search);
+        await updateSearchParams(search);
 
+        navigate("/search")
+
+    }
+
+    const handleTxSearch = async (network, address) => {
+
+        console.log(`transactions onging ${network}, ${address}`)
+        const search = {
+            network: network,
+            walletAdd: address,
+            isNew: true,
+            type: "transaction"
+        }
+        await updateSearchParams(search);
+
+        navigate("/search")
     }
 
     const handleMobile = () => {
@@ -52,12 +75,12 @@ function Nav() {
                     <img src={logo} alt="alchemylogo" />
                 </a>
 
-                <a role="button" onClick={handleMobile} className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar">
+                <button role="button" onClick={() => handleMobile()} className="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbar">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
-                </a>
+                </button>
             </div>
 
             <div id="navbar" className="navbar-menu">
@@ -70,14 +93,22 @@ function Nav() {
                     {searchParams.walletAdd ?
                         <>
                             <div className="navbar-item" >
-                                <a href={"/balances"}>
+                                <div
+                                    className="link"
+                                    to="/balances"
+                                    onClick={() => handleSearch(net, address)}
+                                >
                                     Balances
-                                </a>
+                                </div>
                             </div>
                             <div className="navbar-item">
-                                <a href={"/transactions"}>
-                                    Tansactions
-                                </a>
+                                <div
+                                    className="link"
+                                    to="/transactions"
+                                    onClick={() => handleTxSearch(net, address)}
+                                >
+                                    Transactions
+                                </div>
                             </div>
                         </> : <></>
                     }
@@ -119,13 +150,12 @@ function Nav() {
                     </div>
 
                     <div className="buttons navbar-item">
-                        <Link
+                        <div
                             className="button is-primary"
-                            to="/balances"
                             onClick={() => handleSearch(net, address)}
                         >
                             <strong>Search</strong>
-                        </Link>
+                        </div>
                     </div>
                 </div>
             </div>
