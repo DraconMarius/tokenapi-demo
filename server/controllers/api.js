@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const { Alchemy, Network } = require('alchemy-sdk');
 
+const { calcAge } = require("../util/age")
+
 const Key = process.env.ALCHEMY_API_KEY;
 
 //SDK Config Obj
@@ -113,7 +115,7 @@ router.get('/transactions/:net/:address', async (req, res) => {
         toAddress: address,
         excludeZeroValue: zero,
         category: ["external", "erc20", "erc721", "erc1155", "specialnft"],
-        maxCount: 100,
+        maxCount: 50,
         pageKey: inpageKey,
         withMetadata: true
     }
@@ -122,7 +124,7 @@ router.get('/transactions/:net/:address', async (req, res) => {
         fromAddress: address,
         excludeZeroValue: zero,
         category: ["external", "erc20", "erc721", "erc1155", "specialnft"],
-        maxCount: 100,
+        maxCount: 50,
         pageKey: outpageKey,
         withMetadata: true
     }
@@ -157,7 +159,8 @@ router.get('/transactions/:net/:address', async (req, res) => {
         //order
         const mergeAndSortTransactions = (outTransactions, inTransactions) => {
             // Combine the two arrays
-            const combined = [...inTransactions.res.transfers, ...outTransactions.res.transfers];
+            const combined = [...outTransactions.res.transfers.map(t => ({ ...t, metadata: { ...t.metadata, age: calcAge(t.metadata.blockTimestamp) } })),
+            ...inTransactions.res.transfers.map(t => ({ ...t, metadata: { ...t.metadata, age: calcAge(t.metadata.blockTimestamp) } }))];
 
             // Sort combined array by timestamp, based on order in query
             // most recent first
