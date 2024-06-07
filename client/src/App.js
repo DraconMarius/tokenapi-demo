@@ -1,5 +1,6 @@
 import './App.css';
 import 'bulma/css/bulma.min.css'
+import '@creativebulma/bulma-tooltip/dist/bulma-tooltip.min.css';
 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 

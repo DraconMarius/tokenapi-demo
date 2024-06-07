@@ -94,7 +94,7 @@ function Nav() {
                         <>
                             <div className="navbar-item" >
                                 <div
-                                    className="link"
+                                    className="link is-clickable"
                                     to="/balances"
                                     onClick={() => handleSearch(net, address)}
                                 >
@@ -103,7 +103,7 @@ function Nav() {
                             </div>
                             <div className="navbar-item">
                                 <div
-                                    className="link"
+                                    className="link is-clickable"
                                     to="/transactions"
                                     onClick={() => handleTxSearch(net, address)}
                                 >
