@@ -47,7 +47,7 @@ function Disp() {
         if (searchParams.walletAdd && searchParams.network) {
             fetchData();
         }
-    }, [searchParams.type, searchParams.dir, searchParams, type]);
+    }, [searchParams.network, searchParams.type, searchParams.currentKey, searchParams.dir, searchParams.zeroOpt]);
 
     useEffect(() => {
         console.log(apiRes);
@@ -57,7 +57,7 @@ function Disp() {
     return (
         <div className="container">
             {(loading || !apiRes) ? <>Loading...</> : (type === "default") ? <>Default Search Screen</> :
-                (apiRes.error) ? <>{`ERROR fetching ${type} for ${searchParams.walletAdd} on ${searchParams.net}`}</> :
+                (apiRes.error || !apiRes.wAddress) ? <>{`ERROR fetching ${type} for ${searchParams.walletAdd} on ${searchParams.net}`}</> :
                     (type === "balance") ?
                         <TokenCont apiRes={apiRes} /> :
                         <TxCont apiRes={apiRes} />

@@ -38,8 +38,6 @@ function Nav() {
         }
         await updateSearchParams(search);
 
-        navigate("/search")
-
     }
 
     const handleTxSearch = async (network, address) => {
@@ -52,8 +50,6 @@ function Nav() {
             type: "transaction"
         }
         await updateSearchParams(search);
-
-        navigate("/search")
     }
 
     const handleMobile = () => {
@@ -95,7 +91,6 @@ function Nav() {
                             <div className="navbar-item" >
                                 <div
                                     className="link is-clickable"
-                                    to="/balances"
                                     onClick={() => handleSearch(net, address)}
                                 >
                                     Balances
@@ -104,7 +99,6 @@ function Nav() {
                             <div className="navbar-item">
                                 <div
                                     className="link is-clickable"
-                                    to="/transactions"
                                     onClick={() => handleTxSearch(net, address)}
                                 >
                                     Transactions

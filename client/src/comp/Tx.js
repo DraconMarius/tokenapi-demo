@@ -6,6 +6,11 @@ function Tx({ apiRes }) {
     const { searchParams, updateSearchParams } = useSearch()
     // console.log("transaction log", apiRes)
 
+    const copyString = (string) => {
+        navigator.clipboard.writeText(string)
+        console.log(`copied ${string} to keyboard`)
+    }
+
     const dirRes = `${searchParams.dir}Res`
     console.log(dirRes)
 
@@ -38,13 +43,30 @@ function Tx({ apiRes }) {
                         return (
                             <tr key={index} >
                                 {/* <th>{new Date(tx.metadata.blockTimestamp).toString()}</th> */}
-                                <td className="has-tooltip-arrow has-tooltip-warning" data-tooltip={new Date(tx.metadata.blockTimestamp).toLocaleString()}>{tx.metadata.age}</td>
-                                <td className="has-tooltip-arrow has-tooltip-primary" data-tooltip={tx.hash}>{`${tx.hash.slice(0, 10)}...`}</td>
-                                <td>{tx.blockNum}</td>
+                                <td
+                                    className="has-tooltip-arrow has-tooltip-warning"
+                                    data-tooltip={new Date(tx.metadata.blockTimestamp).toLocaleString()}>
+                                    {tx.metadata.age}</td>
+                                <td
+                                    className="has-tooltip-arrow has-tooltip-primary"
+                                    data-tooltip={tx.hash}
+                                    onClick={() => copyString(tx.hash)}>
+                                    {`${tx.hash.slice(0, 10)}...`}</td>
+                                <td
+                                    onClick={() => copyString(tx.blockNum)}>
+                                    {tx.blockNum}</td>
                                 <td>{tx.category}</td>
                                 {/* conditionally render inbound/outbound tag, then display the wallet */}
-                                <td className="has-text-centered">{(searchParams.walletAdd === tx.from) ? <div className="tag is-warning">TO</div> : <div className="tag is-info">FROM</div>}</td>
-                                <td className="has-tooltip-arrow has-tooltip-primary" data-tooltip={otherAdd}>{formatAdd(otherAdd)}</td>
+                                <td className="has-text-centered">
+                                    {(searchParams.walletAdd === tx.from) ?
+                                        <div className="tag is-warning">TO</div> :
+                                        <div className="tag is-info">FROM</div>}
+                                </td>
+                                <td
+                                    className="has-tooltip-arrow has-tooltip-primary"
+                                    data-tooltip={otherAdd}
+                                    onClick={() => copyString(otherAdd)}>
+                                    {formatAdd(otherAdd)}</td>
                                 <td>{tx.value} {tx.asset}</td>
                             </tr>
                         )
