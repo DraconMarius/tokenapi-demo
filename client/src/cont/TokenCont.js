@@ -48,6 +48,10 @@ function TokenCont({ apiRes }) {
         }
     };
 
+    if (!apiRes) {
+        return <p>No Token Data Available</p>;
+    }
+
     return (
         <div className="container">
             Current displaying Token Balances for Address:
@@ -62,8 +66,8 @@ function TokenCont({ apiRes }) {
                     {!(selectedIndex) ? <>Select Token below to see balance</> :
                         <Balance
                             contractAddress={apiRes.balances[selectedIndex].contractAddress}
-                            name={apiRes.balances[selectedIndex].name}
-                            symbol={apiRes.balances[selectedIndex].symbol || null}
+                            name={apiRes.balances[selectedIndex].name || "no_name"}
+                            symbol={apiRes.balances[selectedIndex].symbol || "null"}
                             balance={apiRes.balances[selectedIndex].balance}
                             logo={apiRes.balances[selectedIndex].logo || "https://placehold.co/48X48"}
                         />
@@ -84,7 +88,7 @@ function TokenCont({ apiRes }) {
 
                 {apiRes.balances.map((token, index) => (
 
-                    <button className="tag" key={index} id={index} onClick={e => setIndex(e.target.id)}>{token.symbol}</button>
+                    <button className="tag" key={index} id={index} onClick={e => setIndex(e.target.id)}>{(token.symbol?.length < 8) ? token.symbol : (token.name || "no_name")}</button>
 
                 )
                 )}

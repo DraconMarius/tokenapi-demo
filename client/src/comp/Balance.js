@@ -8,14 +8,6 @@ import { FlapDisplay, Presets } from 'react-split-flap-effect'
 
 function Balance({ contractAddress, name, symbol, balance, logo }) {
 
-    const blankState = {
-        network: '',
-        walletAdd: '',
-        pageKey: '',
-        prevKeys: [],
-        currentKey: ''
-    }
-
 
     return (
         <div className='card'>

@@ -18,7 +18,7 @@ export const getTokenBalance = async (network, address, pageKey) => {
 
 export const getTransactions = async (network, address, pageKey) => {
     const page = pageKey ? true : false
-    const fetchURL = page ? `/api/transactions/${network}/${address}?outpageKey=${pageKey.outboundKey}?inpageKey=${pageKey.inboundKey}` :
+    const fetchURL = page ? `/api/transactions/${network}/${address}?outpgKey=${pageKey.outboundKey}&inpgKey=${pageKey.inboundKey}` :
         `/api/transactions/${network}/${address}`
     console.log(fetchURL)
     try {

@@ -81,7 +81,7 @@ router.get('/balance/:net/:address', async (req, res) => {
                 pageKey: nextPageKey
             }
         } catch (err) {
-            console.error(`Failed to fetch Balance`, err); 
+            console.error(`Failed to fetch Balance`, err);
             throw new Error(err.message)
         }
     };
@@ -109,6 +109,8 @@ router.get('/transactions/:net/:address', async (req, res) => {
     const inpageKey = req.query.inpgKey || undefined
     const order = req.query.order || "desc"
     const zero = req.query.order || false
+
+    console.log(`inKey: ${inpageKey}, outKey: ${outpageKey}`)
 
     const inboundParams = {
         order: order,
@@ -158,32 +160,73 @@ router.get('/transactions/:net/:address', async (req, res) => {
     try {
         //order
         const mergeAndSortTransactions = (outTransactions, inTransactions) => {
-            // Combine the two arrays
-            const combined = [...outTransactions.res.transfers.map(t => ({ ...t, metadata: { ...t.metadata, age: calcAge(t.metadata.blockTimestamp) } })),
-            ...inTransactions.res.transfers.map(t => ({ ...t, metadata: { ...t.metadata, age: calcAge(t.metadata.blockTimestamp) } }))];
+            // updated to handle potentially empty array when one direction TX results ends
+            const outTransfers = outTransactions.res ? outTransactions.res.transfers : [];
+            const inTransfers = inTransactions.res ? inTransactions.res.transfers : [];
 
-            // Sort combined array by timestamp, based on order in query
-            // most recent first
+            // age calculation
+            const combined = [
+                ...outTransfers.map(t => ({
+                    ...t,
+                    metadata: {
+                        ...t.metadata,
+                        age: calcAge(t.metadata.blockTimestamp)
+                    }
+                })),
+                ...inTransfers.map(t => ({
+                    ...t,
+                    metadata: {
+                        ...t.metadata,
+                        age: calcAge(t.metadata.blockTimestamp)
+                    }
+                }))
+            ];
+
+            // Sort by timestamp, based on the order in the query
             if (order === "desc") {
                 combined.sort((a, b) => new Date(b.metadata.blockTimestamp) - new Date(a.metadata.blockTimestamp));
             } else {
-                //oldest first
                 combined.sort((a, b) => new Date(a.metadata.blockTimestamp) - new Date(b.metadata.blockTimestamp));
             }
             return combined;
         };
 
-        const [outboundRes, inboundRes] = await Promise.all([
-            fetchTransaction(chosenConfig, "outbound"),
-            fetchTransaction(chosenConfig, "inbound")]
-        )
+        // const [outboundRes, inboundRes] = await Promise.all([
+        //     fetchTransaction(chosenConfig, "outbound"),
+        //     fetchTransaction(chosenConfig, "inbound")]
+        // )
 
-        const keyObj = {
-            outboundKey: outboundRes.res.pageKey ? outboundRes.res.pageKey : null,
-            inboundKey: inboundRes.res.pageKey ? inboundRes.res.pageKey : null
+        const promises = [];
+        if (!outpageKey || !inpageKey) { // Check if initial query or pagination
+            // Initial query 
+            promises.push(fetchTransaction(chosenConfig, "outbound"));
+
+            promises.push(fetchTransaction(chosenConfig, "inbound"));
+
+        } else {
+            // Only query directions with a valid pageKey otherwise push empty array
+            if (outpageKey) {
+                promises.push(fetchTransaction(chosenConfig, "outbound"));
+            } else {
+                promises.push([])
+            };
+
+            if (inpageKey) {
+                promises.push(fetchTransaction(chosenConfig, "inbound"));
+            } else {
+                promises.push([])
+            };
         }
 
-        const sortedRes = mergeAndSortTransactions(outboundRes, inboundRes)
+        const results = await Promise.all(promises)
+
+        const sortedRes = mergeAndSortTransactions(results[0], results[1])
+
+        const keyObj = {
+            outboundKey: results[0] ? results[0]?.res.pageKey : null,
+            inboundKey: results[1] ? results[1]?.res.pageKey : null
+        }
+
 
 
         res.json({

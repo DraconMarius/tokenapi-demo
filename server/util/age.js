@@ -1,30 +1,18 @@
-const calcAge = (blockTimestamp) => {
-    const txDate = new Date(blockTimestamp);
+function calcAge(blockTimestamp) {
+    const transactionDate = new Date(blockTimestamp);
     const now = new Date();
+    const diffMs = now - transactionDate; // milliseconds between now & transaction date
 
-    const diff = now - txDate;
-
-    const secs = Math.floor(diff / 1000);
-    const mins = Math.floor(secs / 60);
-    const hrs = Math.floor(mins / 60);
-    const days = Math.floor(hrs / 24);
-    const months = Math.floor(days / 30);
-    const years = Math.floor(days / 365);
-
-    if (secs < 60) {
-        return `${secs} seconds ago`;
-    } else if (mins < 60) {
-        return `${mins} minutes ago`;
-    } else if (hrs < 24) {
-        return `${hrs} hours ago`;
-    } else if (days < 30) {
-        return `${days} days ago`;
-    } else if (months < 12) {
-        return `${months} months ago`;
-    } else {
-        return `${years} years ago`;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24)); // days between
+    if (diffDays < 1) {
+        const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+        if (diffHours < 1) {
+            const diffMinutes = Math.floor(diffMs / (1000 * 60));
+            return `${diffMinutes} minutes ago`;
+        }
+        return `${diffHours} hours ago`;
     }
-
+    return `${diffDays} days ago`;
 }
 
 module.exports = { calcAge }
