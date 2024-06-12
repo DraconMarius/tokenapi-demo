@@ -13,10 +13,9 @@ function Nav() {
     const [address, setAddress] = useState('');
     const [net, setNet] = useState('Eth');
     const { searchParams, updateSearchParams } = useSearch()
-    const navigate = useNavigate();
 
     const blankState = {
-        network: '',
+        network: 'Eth',
         walletAdd: '',
         zero: '',
         pageKey: '',
@@ -101,7 +100,7 @@ function Nav() {
                             <div className="navbar-item">
                                 <div
                                     className="link is-clickable"
-                                    onClick={() => handleTxSearch(net, address)}
+                                    onClick={() => handleTxSearch(searchParams.network, searchParams.walletAdd)}
                                 >
                                     Transactions
                                 </div>
@@ -143,15 +142,18 @@ function Nav() {
                             </select>
                         </div>
 
-                    </div>
-
-                    <div className="buttons navbar-item">
                         <div
                             className="button is-primary"
                             onClick={() => handleSearch(net, address)}
                         >
-                            <strong>Search</strong>
+                            Search
                         </div>
+                        <div className="has-tooltip-arrow has-tooltip-left has-tooltip-warning"
+                            data-tooltip="Connect Wallet">
+                            <Connect />
+                        </div>
+
+
                     </div>
                 </div>
             </div>

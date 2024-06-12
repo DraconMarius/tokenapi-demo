@@ -5,7 +5,7 @@ const SearchContext = createContext();
 export const SearchProvider = ({ children }) => {
 
     const [searchParams, setSearchParams] = useState({
-        network: '',
+        network: 'Eth',
         walletAdd: '',
         zero: '',
         pageKey: '',
