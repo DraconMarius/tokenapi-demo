@@ -7,8 +7,46 @@ import { FlapDisplay, Presets } from 'react-split-flap-effect';
 
 
 function TokenCont({ apiRes }) {
-    // const { searchParams } = useSearch();
+    const { searchParams, updateSearchParams } = useSearch();
     const [selectedIndex, setIndex] = useState()
+
+
+    const isFirstPage = (searchParams.prevKeys && (searchParams.prevKeys.length === 0) && !searchParams.currentKey);
+    const isLastPage = !apiRes?.pageKey
+
+    const handlePageChange = (isNext) => {
+        console.log(isNext, "isNext?")
+        // console.log(network, "network")
+        if (isNext) {
+            // Move to the next page
+            const nextPageKey = apiRes.pageKey;
+            console.log("test page Key", nextPageKey)
+            //if going to 2nd page, no prev key, nor current key
+            if (nextPageKey) {
+                console.log('going to 2nd page')
+                updateSearchParams({
+                    ...searchParams,
+                    "type": "balanceP",
+                    "pageKey": `${nextPageKey}`,
+                    "currentKey": nextPageKey,
+                    isPrevPage: false,
+                    isNew: false
+                });
+                //
+            }
+        } else {
+            console.log("prev")
+            // Move to the previous page
+
+            updateSearchParams({
+                ...searchParams,
+                isPrevPage: true,
+                isNew: false
+            })
+
+
+        }
+    };
 
     return (
         <div className="container">
@@ -33,6 +71,14 @@ function TokenCont({ apiRes }) {
                     }
                 </div>
             </section>
+            <div className="level">
+                <div className="level-item">
+                    <button className="button" disabled={isFirstPage} onClick={() => handlePageChange(false)}> Prev</button>
+                </div>
+                <div className="level-item">
+                    <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
+                </div>
+            </div>
             <div
                 className="buttons is-justify-content-center is-align-items-center">
 
@@ -43,7 +89,7 @@ function TokenCont({ apiRes }) {
                 )
                 )}
             </div>
-        </div>
+        </div >
 
     )
 

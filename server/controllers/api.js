@@ -81,7 +81,7 @@ router.get('/balance/:net/:address', async (req, res) => {
                 pageKey: nextPageKey
             }
         } catch (err) {
-            console.error(`Failed to fetch Balance`, err);
+            console.error(`Failed to fetch Balance`, err); 
             throw new Error(err.message)
         }
     };
