@@ -24,7 +24,7 @@ function Disp() {
         async function fetchData() {
             setLoading(true);
             let data;
-            if (searchParams.type === "balance") {
+            if ((searchParams.type === "balance") && (!searchParams.pageKey)) {
                 data = await getTokenBalance(searchParams.network, searchParams.walletAdd);
                 console.log("Fetched data:", data);
                 setApiRes(data);
@@ -32,6 +32,18 @@ function Disp() {
                 setLoading(false);
             } else if (searchParams.type === "transaction") {
                 data = await getTransactions(searchParams.network, searchParams.walletAdd);
+                console.log("Fetched data:", data);
+                setApiRes(data);
+                setType("transaction")
+                setLoading(false);
+            } else if (searchParams.type === "balanceP") {
+                data = await getTokenBalance(searchParams.network, searchParams.walletAdd, searchParams.pageKey);
+                console.log("Fetched data:", data);
+                setApiRes(data);
+                setType("balance")
+                setLoading(false);
+            } else if (searchParams.type === "transactionP") {
+                data = await getTransactions(searchParams.network, searchParams.walletAdd, searchParams.pageKey);
                 console.log("Fetched data:", data);
                 setApiRes(data);
                 setType("transaction")
@@ -47,7 +59,7 @@ function Disp() {
         if (searchParams.walletAdd && searchParams.network) {
             fetchData();
         }
-    }, [searchParams.network, searchParams.type, searchParams.currentKey, searchParams.dir, searchParams.zeroOpt]);
+    }, [searchParams.network, searchParams.type, searchParams.currentKey, searchParams.dir, searchParams.zeroOpt, searchParams.walletAdd, searchParams.pageKey]);
 
     useEffect(() => {
         console.log(apiRes);

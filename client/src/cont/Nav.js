@@ -20,8 +20,10 @@ function Nav() {
         walletAdd: '',
         zero: '',
         pageKey: '',
+        txPageKey: {},
         prevKeys: [],
         currentKey: '',
+        currentTxKey: {},
         type: '',
         dir: "desc",
         zeroOpt: false
