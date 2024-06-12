@@ -19,7 +19,7 @@ function TxCont({ apiRes }) {
     }
 
     const isFirstPage = (searchParams.prevKeys && (searchParams.prevKeys.length === 0) && !searchParams.currentKey);
-    const isLastPage = !apiRes?.pageKey
+    const isLastPage = Object.keys(apiRes?.pageKey || {}).length === 0;
 
     const handlePageChange = (isNext) => {
         console.log(isNext, "isNext?")
@@ -100,6 +100,14 @@ function TxCont({ apiRes }) {
                     <div className="button" onClick={() => handleUpdate()}>
                         Update Filter
                     </div>
+                </div>
+            </div>
+            <div className="level">
+                <div className="level-item">
+                    <button className="button" disabled={isFirstPage} onClick={() => handlePageChange(false)}> Prev</button>
+                </div>
+                <div className="level-item">
+                    <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
                 </div>
             </div>
 
