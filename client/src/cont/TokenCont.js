@@ -63,14 +63,16 @@ function TokenCont({ apiRes }) {
                 value={apiRes.wAddress} />
             <section className="hero is-medium">
                 <div className="hero-body">
-                    {!(selectedIndex) ? <>Select Token below to see balance</> :
-                        <Balance
-                            contractAddress={apiRes.balances[selectedIndex].contractAddress}
-                            name={apiRes.balances[selectedIndex].name || "no_name"}
-                            symbol={apiRes.balances[selectedIndex].symbol || "null"}
-                            balance={apiRes.balances[selectedIndex].balance}
-                            logo={apiRes.balances[selectedIndex].logo || "https://placehold.co/48X48"}
-                        />
+                    {(apiRes.balances.length === 0) ?
+                        <>No Token Balance Detected!</> :
+                        !(selectedIndex) ? <>Select Token below to see balance</> :
+                            <Balance
+                                contractAddress={apiRes.balances[selectedIndex].contractAddress}
+                                name={apiRes.balances[selectedIndex].name || "no_name"}
+                                symbol={apiRes.balances[selectedIndex].symbol || "null"}
+                                balance={apiRes.balances[selectedIndex].balance}
+                                logo={apiRes.balances[selectedIndex].logo || "https://placehold.co/48X48"}
+                            />
 
                     }
                 </div>

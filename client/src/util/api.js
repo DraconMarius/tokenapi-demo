@@ -16,10 +16,13 @@ export const getTokenBalance = async (network, address, pageKey) => {
     }
 }
 
-export const getTransactions = async (network, address, pageKey) => {
+export const getTransactions = async (network, address, pageKey, order, zero) => {
+    console.log(pageKey)
     const page = pageKey ? true : false
-    const fetchURL = page ? `/api/transactions/${network}/${address}?outpgKey=${pageKey.outboundKey}&inpgKey=${pageKey.inboundKey}` :
-        `/api/transactions/${network}/${address}`
+    const dir = order ? order : "desc"
+    const zeroOpt = zero ? zero : false
+    const fetchURL = page ? `/api/transactions/${network}/${address}?outpgKey=${pageKey.outboundKey}&inpgKey=${pageKey.inboundKey}&order=${dir}&zero=${zeroOpt}` :
+        `/api/transactions/${network}/${address}?order=${dir}&zero=${zeroOpt}`
     console.log(fetchURL)
     try {
         const response = await fetch(fetchURL);

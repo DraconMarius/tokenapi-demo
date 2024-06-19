@@ -31,7 +31,7 @@ function Disp() {
                 setType("balance")
                 setLoading(false);
             } else if (searchParams.type === "transaction") {
-                data = await getTransactions(searchParams.network, searchParams.walletAdd);
+                data = await getTransactions(searchParams.network, searchParams.walletAdd, null, searchParams.dir, searchParams.zeroOpt);
                 console.log("Fetched data:", data);
                 setApiRes(data);
                 setType("transaction")
@@ -43,7 +43,7 @@ function Disp() {
                 setType("balance")
                 setLoading(false);
             } else if (searchParams.type === "transactionP") {
-                data = await getTransactions(searchParams.network, searchParams.walletAdd, searchParams.pageKey);
+                data = await getTransactions(searchParams.network, searchParams.walletAdd, searchParams.pageKey, searchParams.dir, searchParams.zeroOpt);
                 console.log("Fetched data:", data);
                 setApiRes(data);
                 setType("transaction")
@@ -62,13 +62,13 @@ function Disp() {
     }, [searchParams.network, searchParams.type, searchParams.currentKey, searchParams.dir, searchParams.zeroOpt, searchParams.walletAdd, searchParams.pageKey]);
 
     useEffect(() => {
-        console.log(apiRes);
+        console.log(type);
 
-    }, [apiRes])
+    }, [type])
 
     return (
         <div className="container">
-            {(loading || !apiRes) ? <>Loading...</> : (type === "default") ? <>Default Search Screen</> :
+            {(loading || !apiRes || (type === "default")) ? <>Default Search Screen</> :
                 (apiRes.error || !apiRes.wAddress) ? <>{`ERROR fetching ${type} for ${searchParams.walletAdd} on ${searchParams.net}`}</> :
                     (type === "balance") ?
                         <TokenCont apiRes={apiRes} /> :

@@ -105,36 +105,45 @@ router.get('/transactions/:net/:address', async (req, res) => {
     const chosenConfig = configs[chosenNet];
     console.log(chosenConfig)
     const address = req.params.address;
-    const outpageKey = req.query.outpgKey || undefined
-    const inpageKey = req.query.inpgKey || undefined
+    const outpageKey = req.query.outpgKey || null
+    const inpageKey = req.query.inpgKey || null
     const order = req.query.order || "desc"
-    const zero = req.query.order || false
+    const zero = (req.query.zero === "false") ? false : true //making sure to pass boolean instead of string, sorry that it is a lil bit scrappy
 
-    console.log(`inKey: ${inpageKey}, outKey: ${outpageKey}`)
+    console.log(`inKey: ${inpageKey}, outKey: ${outpageKey}, zero:${zero}, order: ${order}`)
+    console.log(typeof (zero))
 
-    const inboundParams = {
+
+    const createParams = (pageKey, otherOpts) => {
+        if (pageKey) {
+            return { ...otherOpts, pageKey: pageKey }
+        } else return otherOpts;
+    };
+
+    const inboundParams = createParams(inpageKey, {
         order: order,
         toAddress: address,
         excludeZeroValue: zero,
         category: ["external", "erc20", "erc721", "erc1155", "specialnft"],
         maxCount: 50,
-        pageKey: inpageKey,
         withMetadata: true
-    }
-    const outboundParams = {
+    });
+
+    const outboundParams = createParams(outpageKey, {
         order: order,
         fromAddress: address,
         excludeZeroValue: zero,
         category: ["external", "erc20", "erc721", "erc1155", "specialnft"],
         maxCount: 50,
-        pageKey: outpageKey,
         withMetadata: true
-    }
+    });
 
 
     const fetchTransaction = async (chosenConfig, option) => {
 
         const params = (option === "outbound") ? outboundParams : inboundParams
+
+        console.log(params)
 
         const alchemy = new Alchemy(chosenConfig)
 
@@ -223,8 +232,8 @@ router.get('/transactions/:net/:address', async (req, res) => {
         const sortedRes = mergeAndSortTransactions(results[0], results[1])
 
         const keyObj = {
-            outboundKey: results[0] ? results[0]?.res.pageKey : null,
-            inboundKey: results[1] ? results[1]?.res.pageKey : null
+            outboundKey: results[0] ? results[0]?.res?.pageKey : null,
+            inboundKey: results[1] ? results[1]?.res?.pageKey : null
         }
 
 

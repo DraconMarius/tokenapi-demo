@@ -4,7 +4,7 @@ import { useSearch } from '../cont/searchContext';
 function Connect() {
     const { updateSearchParams } = useSearch();
     const [address, setAddress] = useState('');
-    const [selectedProv, setSelectedProv] = useState(null);
+    // const [selectedProv, setSelectedProv] = useState(null);
     const [walletDisp, setWalletDisp] = useState(false);
     const [btnDisp, setBtnDisp] = useState(false);
     const [providers, setProviders] = useState([]);
@@ -24,24 +24,26 @@ function Connect() {
     const handleConnect = async providerDetail => {
         try {
             const accounts = await providerDetail.provider.request({ method: 'eth_requestAccounts' });
-            setAddress(accounts[0]);
-            setSelectedProv(providerDetail);
+            updateSearchParams({
+                network: 'Eth',
+                walletAdd: accounts[0],
+                zero: '',
+                pageKey: '',
+                txPageKey: {},
+                prevKeys: [],
+                currentKey: '',
+                currentTxKey: {},
+                type: 'balance',
+                dir: "desc",
+                zeroOpt: false,
+                isNew: true
+            })
+            // setSelectedProv(providerDetail);
             setWalletDisp(false);
         } catch (err) {
             console.error("Error connecting to wallet provider", err);
         }
     };
-
-    useEffect(() => {
-        if (address) {
-            updateSearchParams({
-                network: "Eth",
-                walletAdd: address,
-                isNew: true,
-                type: "balance"
-            });
-        }
-    }, [address]);
 
     useEffect(() => {
         setBtnDisp(providers.length > 0);

@@ -14,12 +14,13 @@ function TxCont({ apiRes }) {
 
     const handleUpdate = () => {
         updateSearchParams({
-            ...searchParams, dir: dir, zeroOpt: zeroOpt
+            ...searchParams, dir: dir, zeroOpt: zeroOpt, isNew: false
         })
     }
 
     const isFirstPage = (searchParams.prevKeys && (searchParams.prevKeys.length === 0) && !searchParams.currentKey);
     const isLastPage = Object.keys(apiRes?.pageKey || {}).length === 0;
+    const isNoData = apiRes?.[`${searchParams.dir}Res`]?.length === 0
 
     const handlePageChange = (isNext) => {
         console.log(isNext, "isNext?")
@@ -36,6 +37,8 @@ function TxCont({ apiRes }) {
                     "type": "transactionP",
                     "pageKey": nextPageKey,
                     "currentKey": nextPageKey,
+                    dir: dir,
+                    zeroOpt: zeroOpt,
                     isPrevPage: false,
                     isNew: false
                 });
@@ -47,6 +50,8 @@ function TxCont({ apiRes }) {
 
             updateSearchParams({
                 ...searchParams,
+                dir: dir,
+                zeroOpt: zeroOpt,
                 isPrevPage: true,
                 isNew: false
             })
@@ -56,13 +61,11 @@ function TxCont({ apiRes }) {
     };
 
     useEffect(() => {
-        console.log(dir, zeroOpt)
 
-    }, [dir, zeroOpt])
+        console.log(`dir and zeroOpt, ${dir}, ${zeroOpt}`)
 
-    if (!apiRes) {
-        return <p>No Transaction Data Available</p>;
-    }
+    }, [searchParams.dir, searchParams.zeroOpt]);
+
 
     return (
         <div className='container'>
@@ -81,7 +84,8 @@ function TxCont({ apiRes }) {
 
                     <p >Order? :</p>
                     <div className="select" id="order">
-                        <select onChange={e => setDir(e.target.value)}>
+                        <select value={dir} onChange={e => setDir(e.target.value)}
+                            disabled={isNoData}>
                             <option value="desc"> Descending</option>
                             <option value="asc"> Ascending</option>
                         </select>
@@ -90,14 +94,19 @@ function TxCont({ apiRes }) {
                 <div className="level-item">
                     <p >Exclude Zeros? :</p>
                     <div className="select" id="zero" >
-                        <select onChange={e => setzeroOpt(e.target.value)}>
+                        <select value={zeroOpt} onChange={e => setzeroOpt(e.target.value)}
+                            disabled={isNoData}
+                        >
                             <option value={false}> False</option>
                             <option value={true}> True</option>
                         </select>
                     </div>
                 </div>
                 <div className="level-item">
-                    <div className="button" onClick={() => handleUpdate()}>
+                    <div className="button"
+                        onClick={() => handleUpdate()}
+                        disabled={isNoData}
+                    >
                         Update Filter
                     </div>
                 </div>
