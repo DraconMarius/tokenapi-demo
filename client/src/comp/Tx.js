@@ -61,7 +61,7 @@ function Tx({ apiRes }) {
 
                                 const otherAdd = (apiRes.wAddress === tx.from) ? tx.to : tx.from
 
-                                const blockNum = parsInt(tx.blockNum, 12)
+                                const blockNum = parseInt(tx.blockNum, 12)
 
                                 const etherscanAdd = `https://etherscan.io/address/${otherAdd}`
 
