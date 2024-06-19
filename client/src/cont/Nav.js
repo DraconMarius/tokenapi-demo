@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import { useNavigate } from 'react-router-dom'
-
 import logo from '../assets/alchemylogo.png';
 import Connect from '../comp/Connect';
 
@@ -146,7 +144,7 @@ function Nav() {
                         >
                             Search
                         </div>
-                        <div className="has-tooltip-arrow has-tooltip-left has-tooltip-warning"
+                        <div className="has-tooltip-arrow has-tooltip-left has-tooltip-warning ml-3 is-pulled-right"
                             data-tooltip="Connect Wallet">
                             <Connect />
                         </div>

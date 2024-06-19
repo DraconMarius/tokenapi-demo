@@ -6,13 +6,20 @@ import Tx from '../comp/Tx';
 
 import { FlapDisplay, Presets } from 'react-split-flap-effect';
 
-import etherscanIcon from '../assets/etherscan-logo.png'
+import ethereumIcon from '../assets/etherscan-logo.png'
+import arbitrumIcon from '../assets/arbitrum-logo.png'
+import optimismIcon from '../assets/optimism-logo.png'
+import polygonIcon from '../assets/polygon-logo.png'
+
+import scanUrl from '../util/scan'
 
 function TxCont({ apiRes }) {
     const { searchParams, updateSearchParams } = useSearch()
 
     const [dir, setDir] = useState(searchParams.dir);
     const [zeroOpt, setzeroOpt] = useState(searchParams.zeroOpt);
+
+    const [icon, setIcon] = useState()
 
     const handleUpdate = () => {
         updateSearchParams({
@@ -25,7 +32,7 @@ function TxCont({ apiRes }) {
             currentKey: ''
         })
     }
-    const etherscanWallet = `https://etherscan.io/address/${apiRes.wAddress}`
+    const etherscanWallet = `${scanUrl[searchParams.network]}address/${apiRes.wAddress}`
 
     const isFirstPage = (searchParams.prevKeys && (searchParams.prevKeys.length === 0) && !searchParams.currentKey);
     const isLastPage = Object.keys(apiRes?.pageKey || {}).length === 0;
@@ -71,9 +78,17 @@ function TxCont({ apiRes }) {
 
     useEffect(() => {
 
-        console.log(`dir and zeroOpt, ${dir}, ${zeroOpt}`)
+        if (searchParams.network === "Polygon") {
+            setIcon(polygonIcon)
+        } else if (searchParams.network === "Arbitrum") {
+            setIcon(arbitrumIcon)
+        } else if (searchParams.network === "Optimism") {
+            setIcon(optimismIcon)
+        } else {
+            setIcon(ethereumIcon)
+        }
 
-    }, [searchParams.dir, searchParams.zeroOpt]);
+    }, [searchParams.network]);
 
 
     return (
@@ -88,7 +103,7 @@ function TxCont({ apiRes }) {
                     timing={60}
                     value={apiRes.wAddress} />
                 <a href={etherscanWallet} target="_blank" className="pl-3 is-align-self-center">
-                    <span className="icon is-small is-align-self-center"  ><img src={etherscanIcon} /></span>
+                    <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
                 </a>
             </div>
 
@@ -137,7 +152,7 @@ function TxCont({ apiRes }) {
             <section className="hero is-medium">
 
 
-                <Tx apiRes={apiRes} />
+                <Tx apiRes={apiRes} icon={icon} />
 
 
             </section>

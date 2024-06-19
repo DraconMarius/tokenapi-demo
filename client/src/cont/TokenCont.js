@@ -5,18 +5,24 @@ import { useSearch } from './searchContext';
 import Balance from '../comp/Balance';
 import { FlapDisplay, Presets } from 'react-split-flap-effect';
 
-import etherscanIcon from '../assets/etherscan-logo.png'
+import ethereumIcon from '../assets/etherscan-logo.png'
+import arbitrumIcon from '../assets/arbitrum-logo.png'
+import optimismIcon from '../assets/optimism-logo.png'
+import polygonIcon from '../assets/polygon-logo.png'
+
+import scanUrl from '../util/scan'
 
 
 function TokenCont({ apiRes }) {
     const { searchParams, updateSearchParams } = useSearch();
-    const [selectedIndex, setIndex] = useState()
+    const [selectedIndex, setIndex] = useState();
+    const [icon, setIcon] = useState();
 
 
     const isFirstPage = (searchParams.prevKeys && (searchParams.prevKeys.length === 0) && !searchParams.currentKey);
     const isLastPage = !apiRes?.pageKey
 
-    const etherscanWallet = `https://etherscan.io/address/${apiRes.wAddress}`
+    const etherscanWallet = `${scanUrl[searchParams.network]}address/${apiRes.wAddress}`
 
     const handlePageChange = (isNext) => {
         console.log(isNext, "isNext?")
@@ -52,9 +58,25 @@ function TokenCont({ apiRes }) {
         }
     };
 
+    useEffect(() => {
+
+        if (searchParams.network === "Polygon") {
+            setIcon(polygonIcon)
+        } else if (searchParams.network === "Arbitrum") {
+            setIcon(arbitrumIcon)
+        } else if (searchParams.network === "Optimism") {
+            setIcon(optimismIcon)
+        } else {
+            setIcon(ethereumIcon)
+        }
+
+    }, [searchParams.network]);
+
     if (!apiRes) {
         return <p>No Token Data Available</p>;
     }
+
+
 
     return (
         <div className="container">
@@ -67,7 +89,7 @@ function TokenCont({ apiRes }) {
                     timing={60}
                     value={apiRes.wAddress} />
                 <a href={etherscanWallet} target="_blank" className="pl-3 is-align-self-center">
-                    <span className="icon is-small is-align-self-center"  ><img src={etherscanIcon} /></span>
+                    <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
                 </a>
             </div>
             <section className="hero is-medium">
@@ -81,6 +103,8 @@ function TokenCont({ apiRes }) {
                                 symbol={apiRes.balances[selectedIndex].symbol || "null"}
                                 balance={apiRes.balances[selectedIndex].balance}
                                 logo={apiRes.balances[selectedIndex].logo || "https://placehold.co/48X48"}
+                                network={searchParams.network}
+                                icon={icon}
                             />
 
                     }

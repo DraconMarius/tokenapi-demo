@@ -4,9 +4,10 @@ import { useSearch } from '../cont/searchContext';
 
 import { FlapDisplay, Presets } from 'react-split-flap-effect';
 
-import etherscanIcon from '../assets/etherscan-logo.png'
 
-function Tx({ apiRes }) {
+import scanUrl from '../util/scan'
+
+function Tx({ apiRes, icon }) {
     const { searchParams, updateSearchParams } = useSearch()
     // console.log("transaction log", apiRes)
 
@@ -61,13 +62,13 @@ function Tx({ apiRes }) {
 
                                 const otherAdd = (apiRes.wAddress === tx.from) ? tx.to : tx.from
 
-                                const blockNum = parseInt(tx.blockNum, 12)
+                                const blockNum = parseInt(tx.blockNum, 16)
 
-                                const etherscanAdd = `https://etherscan.io/address/${otherAdd}`
+                                const etherscanAdd = `${scanUrl[searchParams.network]}address/${otherAdd}`
 
-                                const etherscanHash = `https://etherscan.io/tx/${tx.hash}`
+                                const etherscanHash = `${scanUrl[searchParams.network]}tx/${tx.hash}`
 
-                                const etherscanBlock = `https://etherscan.io/block/${blockNum}`
+                                const etherscanBlock = `${scanUrl[searchParams.network]}block/${blockNum}`
 
                                 const formatAdd = (add) => {
                                     try {
@@ -96,7 +97,7 @@ function Tx({ apiRes }) {
                                             <span className="is-align-item-center">
                                                 <span>{`${tx.hash.slice(0, 10)}...`}</span>
                                                 <a href={etherscanHash} className="is-pulled-right" target="_blank">
-                                                    <span className="icon is-small is-align-self-center" ><img src={etherscanIcon} /></span>
+                                                    <span className="icon is-small is-align-self-center" ><img src={icon} /></span>
                                                 </a>
                                             </span>
                                         </td>
@@ -105,7 +106,7 @@ function Tx({ apiRes }) {
                                             <span className="is-align-item-center">
                                                 <span>{blockNum}</span>
                                                 <a href={etherscanBlock} className="is-pulled-right" target="_blank">
-                                                    <span className="icon is-small is-align-self-center"  ><img src={etherscanIcon} /></span>
+                                                    <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
                                                 </a>
                                             </span>
                                         </td>
@@ -124,7 +125,7 @@ function Tx({ apiRes }) {
                                             <span className="is-align-item-center">
                                                 <span>{formatAdd(otherAdd)}</span>
                                                 <a href={etherscanAdd} className="is-pulled-right" target="_blank">
-                                                    <span className="icon is-small is-align-self-center"  ><img src={etherscanIcon} /></span>
+                                                    <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
                                                 </a>
                                             </span>
                                         </td>
