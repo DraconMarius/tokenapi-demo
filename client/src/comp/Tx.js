@@ -4,6 +4,8 @@ import { useSearch } from '../cont/searchContext';
 
 import { FlapDisplay, Presets } from 'react-split-flap-effect';
 
+import etherscanIcon from '../assets/etherscan-logo.png'
+
 function Tx({ apiRes }) {
     const { searchParams, updateSearchParams } = useSearch()
     // console.log("transaction log", apiRes)
@@ -20,7 +22,6 @@ function Tx({ apiRes }) {
         return <p>No Transaction Data Available</p>;
     }
 
-    const etherscanWallet = `https://etherscan.io/address/${apiRes.wAddress}`
 
     return (
         <>
@@ -34,7 +35,7 @@ function Tx({ apiRes }) {
                             length={42}
                             timing={30}
                             hinge={true}
-                            value="No transaction Data Available" />
+                            value="No transaction Data Available!" />
 
                     </div>
                 </div>
@@ -60,6 +61,12 @@ function Tx({ apiRes }) {
 
                                 const otherAdd = (apiRes.wAddress === tx.from) ? tx.to : tx.from
 
+                                const etherscanAdd = `https://etherscan.io/address/${tx.otherAdd}`
+
+                                const etherscanHash = `https://etherscan.io/tx/${tx.hash}`
+
+                                const etherscanBlock = `https://etherscan.io/block/${tx.blockNum}`
+
                                 const formatAdd = (add) => {
                                     try {
 
@@ -81,29 +88,52 @@ function Tx({ apiRes }) {
                                             data-tooltip={new Date(tx.metadata.blockTimestamp).toLocaleString()}>
                                             {tx.metadata.age}</td>
                                         <td
-                                            className="has-tooltip-arrow has-tooltip-primary"
+                                            className="has-tooltip-arrow has-tooltip-primary "
                                             data-tooltip={tx.hash}
                                             onClick={() => copyString(tx.hash)}>
-                                            {`${tx.hash.slice(0, 10)}...`}</td>
+                                            <span className="is-align-item-center">
+                                                <span>{`${tx.hash.slice(0, 10)}...`}</span>
+                                                <a href={etherscanHash} className="is-pulled-right" target="_blank">
+                                                    <span className="icon is-small is-align-self-center" ><img src={etherscanIcon} /></span>
+                                                </a>
+                                            </span>
+                                        </td>
                                         <td
                                             onClick={() => copyString(tx.blockNum)}>
-                                            {tx.blockNum}</td>
+                                            <span className="is-align-item-center">
+                                                <span>{tx.blockNum}</span>
+                                                <a href={etherscanBlock} className="is-pulled-right" target="_blank">
+                                                    <span className="icon is-small is-align-self-center"  ><img src={etherscanIcon} /></span>
+                                                </a>
+                                            </span>
+                                        </td>
                                         <td>{tx.category}</td>
                                         {/* conditionally render inbound/outbound tag, then display the address */}
                                         <td className="has-text-centered">
                                             {(apiRes.wAddress === tx.from) ?
                                                 <div className="tag is-warning">TO</div> :
                                                 <div className="tag is-info">FROM</div>}
+
                                         </td>
                                         <td
                                             className="has-tooltip-arrow has-tooltip-primary"
                                             data-tooltip={otherAdd}
                                             onClick={() => copyString(otherAdd)}>
-                                            {formatAdd(otherAdd)}</td>
+                                            <span className="is-align-item-center">
+                                                <span>{formatAdd(otherAdd)}</span>
+                                                <a href={etherscanAdd} className="is-pulled-right" target="_blank">
+                                                    <span className="icon is-small is-align-self-center"  ><img src={etherscanIcon} /></span>
+                                                </a>
+                                            </span>
+                                        </td>
                                         <td className="is-align-content-center">
-                                            {tx.mData ?
-                                                <span className="icon is-small is-align-content-center"><img src={tx.mData.logo || "https://placehold.co/50?text=null"} /></span> : <></>}
-                                            {tx.value}{` ${(tx.asset?.length > 15) ? `UNIT(s)` : tx.asset}`}</td>
+                                            <span className="icon-text is-align-content-center">
+
+                                                <span> {tx.value}{` ${(tx.asset?.length > 15) ? `UNIT(s)` : tx.asset}`} </span>
+                                                {tx.mData ?
+                                                    <span className="icon is-small is-align-self-center"><img src={tx.mData.logo || "https://placehold.co/50?text=null"} /></span> : <></>}
+                                            </span>
+                                        </td>
                                     </tr>
                                 )
                             })}

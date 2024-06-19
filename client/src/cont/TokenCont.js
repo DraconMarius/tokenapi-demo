@@ -5,6 +5,8 @@ import { useSearch } from './searchContext';
 import Balance from '../comp/Balance';
 import { FlapDisplay, Presets } from 'react-split-flap-effect';
 
+import etherscanIcon from '../assets/etherscan-logo.png'
+
 
 function TokenCont({ apiRes }) {
     const { searchParams, updateSearchParams } = useSearch();
@@ -13,6 +15,8 @@ function TokenCont({ apiRes }) {
 
     const isFirstPage = (searchParams.prevKeys && (searchParams.prevKeys.length === 0) && !searchParams.currentKey);
     const isLastPage = !apiRes?.pageKey
+
+    const etherscanWallet = `https://etherscan.io/address/${apiRes.wAddress}`
 
     const handlePageChange = (isNext) => {
         console.log(isNext, "isNext?")
@@ -55,12 +59,17 @@ function TokenCont({ apiRes }) {
     return (
         <div className="container">
             Current displaying Token Balances for Address:
-            <FlapDisplay
-                className="darBordered"
-                chars={Presets.ALPHANUM + ',.!'}
-                length={42}
-                timing={60}
-                value={apiRes.wAddress} />
+            <div className="container">
+                <FlapDisplay
+                    className="darBordered is-pulled-left"
+                    chars={Presets.ALPHANUM + ',.!'}
+                    length={42}
+                    timing={60}
+                    value={apiRes.wAddress} />
+                <a href={etherscanWallet} target="_blank" className="pl-3 is-align-self-center">
+                    <span className="icon is-small is-align-self-center"  ><img src={etherscanIcon} /></span>
+                </a>
+            </div>
             <section className="hero is-medium">
                 <div className="hero-body">
                     {(apiRes.balances.length === 0) ?

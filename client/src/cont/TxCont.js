@@ -6,6 +6,8 @@ import Tx from '../comp/Tx';
 
 import { FlapDisplay, Presets } from 'react-split-flap-effect';
 
+import etherscanIcon from '../assets/etherscan-logo.png'
+
 function TxCont({ apiRes }) {
     const { searchParams, updateSearchParams } = useSearch()
 
@@ -23,6 +25,7 @@ function TxCont({ apiRes }) {
             currentKey: ''
         })
     }
+    const etherscanWallet = `https://etherscan.io/address/${apiRes.wAddress}`
 
     const isFirstPage = (searchParams.prevKeys && (searchParams.prevKeys.length === 0) && !searchParams.currentKey);
     const isLastPage = Object.keys(apiRes?.pageKey || {}).length === 0;
@@ -76,14 +79,19 @@ function TxCont({ apiRes }) {
     return (
         <div className='container'>
 
-
             Current displaying Transactions for Address on {apiRes.net}:
-            <FlapDisplay
-                className='darBordered'
-                chars={Presets.ALPHANUM + ',.!'}
-                length={42}
-                timing={60}
-                value={apiRes.wAddress} />
+            <div className="container">
+                <FlapDisplay
+                    className='darBordered is-pulled-left'
+                    chars={Presets.ALPHANUM + ',.!'}
+                    length={42}
+                    timing={60}
+                    value={apiRes.wAddress} />
+                <a href={etherscanWallet} target="_blank" className="pl-3 is-align-self-center">
+                    <span className="icon is-small is-align-self-center"  ><img src={etherscanIcon} /></span>
+                </a>
+            </div>
+
 
             <div className="level">
                 <div className="level-item">
