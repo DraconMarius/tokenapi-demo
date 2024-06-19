@@ -134,7 +134,7 @@ function Tx({ apiRes, icon }) {
 
                                                 <span> {tx.value}{` ${(tx.asset?.length > 15) ? `UNIT(s)` : tx.asset}`} </span>
                                                 {tx.mData ?
-                                                    <span className="icon is-small is-align-self-center"><img src={tx.mData.logo || "https://placehold.co/50?text=null"} /></span> : <></>}
+                                                    <span className="icon is-small is-align-self-center"><img src={tx.mData.logo || null} /></span> : <></>}
                                             </span>
                                         </td>
                                     </tr>
