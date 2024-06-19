@@ -14,7 +14,13 @@ function TxCont({ apiRes }) {
 
     const handleUpdate = () => {
         updateSearchParams({
-            ...searchParams, dir: dir, zeroOpt: zeroOpt, isNew: false
+            ...searchParams,
+            dir: dir,
+            zeroOpt: zeroOpt,
+            isNew: false,
+            pageKey: '',
+            prevKeys: [],
+            currentKey: ''
         })
     }
 

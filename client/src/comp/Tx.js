@@ -20,6 +20,8 @@ function Tx({ apiRes }) {
         return <p>No Transaction Data Available</p>;
     }
 
+    const etherscanWallet = `https://etherscan.io/address/${apiRes.wAddress}`
+
     return (
         <>
             {!apiRes ? <>loading</> : (apiRes[dirRes].length === 0) ? <div className='card '><div className='card-content '>
@@ -39,7 +41,7 @@ function Tx({ apiRes }) {
             </div>
             </div> :
                 <div className="table-container ">
-                    <table className="table is-justify-content-center is-bordered is-striped is-fullwidth is-hoverable is-narrow">
+                    <table className="table is-justify-content-center is-align-content-center is-bordered is-striped is-fullwidth is-hoverable is-narrow">
                         <thead>
                             <tr>
                                 <th title="Age"> Age </th>
@@ -98,7 +100,10 @@ function Tx({ apiRes }) {
                                             data-tooltip={otherAdd}
                                             onClick={() => copyString(otherAdd)}>
                                             {formatAdd(otherAdd)}</td>
-                                        <td>{tx.value}{` ${(tx.asset?.length > 15) ? `UNIT(s)` : tx.asset}`}</td>
+                                        <td className="is-align-content-center">
+                                            {tx.mData ?
+                                                <span className="icon is-small is-align-content-center"><img src={tx.mData.logo || "https://placehold.co/50?text=null"} /></span> : <></>}
+                                            {tx.value}{` ${(tx.asset?.length > 15) ? `UNIT(s)` : tx.asset}`}</td>
                                     </tr>
                                 )
                             })}

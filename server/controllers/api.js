@@ -40,6 +40,7 @@ router.get('/balance/:net/:address', async (req, res) => {
     const address = req.params.address;
     const pageKey = req.query.pgKey || null
 
+
     const fetchBalance = async (net, chosenConfig, address, pageKey) => {
         const alchemy = new Alchemy(chosenConfig);
         try {
@@ -147,8 +148,30 @@ router.get('/transactions/:net/:address', async (req, res) => {
 
         const alchemy = new Alchemy(chosenConfig)
 
+        const fetchTokenMetadata = async (tokenAddress, alchemy) => {
+            try {
+                const metadata = await alchemy.core.getTokenMetadata(tokenAddress);
+                return metadata;
+            } catch (error) {
+                console.error("Error fetching token metadata for address:", tokenAddress, error);
+                return null;
+            }
+        };
+
+        const addmData = async (txs, alchemy) => {
+            const promises = txs.map(async (tx) => {
+                if ((tx.category === "erc20") && (tx.value !== "0")) {
+                    const mData = await fetchTokenMetadata(tx.rawContract.address, alchemy)
+                    return { ...tx, mData: mData };
+                }
+                return tx;
+            })
+            return Promise.all(promises)
+        }
+
         try {
             const transactions = await alchemy.core.getAssetTransfers(params)
+            const txWithMetadata = await addmData(transactions.transfers, alchemy);
 
             const nextPageKey = transactions.pageKey
 
@@ -156,7 +179,7 @@ router.get('/transactions/:net/:address', async (req, res) => {
 
 
             return {
-                res: transactions,
+                res: { ...transactions, transfers: txWithMetadata },
                 pageKey: nextPageKey
             }
 
