@@ -61,11 +61,13 @@ function Tx({ apiRes }) {
 
                                 const otherAdd = (apiRes.wAddress === tx.from) ? tx.to : tx.from
 
-                                const etherscanAdd = `https://etherscan.io/address/${tx.otherAdd}`
+                                const blockNum = parsInt(tx.blockNum, 12)
+
+                                const etherscanAdd = `https://etherscan.io/address/${otherAdd}`
 
                                 const etherscanHash = `https://etherscan.io/tx/${tx.hash}`
 
-                                const etherscanBlock = `https://etherscan.io/block/${tx.blockNum}`
+                                const etherscanBlock = `https://etherscan.io/block/${blockNum}`
 
                                 const formatAdd = (add) => {
                                     try {
@@ -101,7 +103,7 @@ function Tx({ apiRes }) {
                                         <td
                                             onClick={() => copyString(tx.blockNum)}>
                                             <span className="is-align-item-center">
-                                                <span>{tx.blockNum}</span>
+                                                <span>{blockNum}</span>
                                                 <a href={etherscanBlock} className="is-pulled-right" target="_blank">
                                                     <span className="icon is-small is-align-self-center"  ><img src={etherscanIcon} /></span>
                                                 </a>
