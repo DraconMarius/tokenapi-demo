@@ -11,7 +11,7 @@ export const SearchProvider = ({ children }) => {
         pageKey: '',
         prevKeys: [],
         currentKey: '',
-        type: '',
+        type: 'default',
         dir: "desc",
         zeroOpt: false
     });

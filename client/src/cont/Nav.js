@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import logo from '../assets/alchemylogo.png';
 import Connect from '../comp/Connect';
+import Help from '../comp/Help';
 
 import { useSearch } from './searchContext';
 
@@ -144,11 +145,16 @@ function Nav() {
                         >
                             Search
                         </div>
-                        <div className="has-tooltip-arrow has-tooltip-left has-tooltip-warning ml-3 is-pulled-right"
-                            data-tooltip="Connect Wallet">
-                            <Connect />
-                        </div>
 
+                        <div className="ml-3 is-pulled-right">
+
+                            <div className="has-tooltip-arrow has-tooltip-left has-tooltip-warning"
+                                data-tooltip="Connect Wallet">
+                                <Connect />
+                            </div>
+
+                            <Help type={searchParams.type} />
+                        </div>
 
                     </div>
                 </div>
