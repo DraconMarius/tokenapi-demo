@@ -7,6 +7,7 @@
     "@creativebulma/bulma-tooltip": "^1.2.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
+    "bulma": "^1.0.0",
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -42,7 +43,6 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.6",
-    "bulma": "^1.0.0",
     "sass": "^1.77.6"
   }
 }
