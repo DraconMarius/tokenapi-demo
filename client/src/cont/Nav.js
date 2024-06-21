@@ -88,7 +88,7 @@ function Nav() {
                         <>
                             <div className="navbar-item" >
                                 <div
-                                    className="link is-clickable"
+                                    className="is-link is-clickable"
                                     onClick={() => handleSearch(net, address)}
                                 >
                                     Balances
@@ -96,7 +96,7 @@ function Nav() {
                             </div>
                             <div className="navbar-item">
                                 <div
-                                    className="link is-clickable"
+                                    className="is-link is-clickable"
                                     onClick={() => handleTxSearch(searchParams.network, searchParams.walletAdd)}
                                 >
                                     Transactions

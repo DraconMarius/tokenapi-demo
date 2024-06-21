@@ -1,0 +1,39 @@
+@charset "utf-8";
+
+//custom Color
+//lightMode
+/* SCSS HEX */
+// $deep-sky-blue: #41C1F4ff;
+// $risd-blue: #0055FFff;
+// $white: #FBFDFEff;
+// $lavender-web: #ECE9FFff;
+// $electric-purple: #AD42F1ff;
+// $medium-slate-blue: #7559FFff;
+// $air-superiority-blue: #629CBCff;
+// $yale-blue: #223A60ff;
+// $bronze: #C5821Fff;
+// $fandango: #BA3989ff;
+
+$deep-sky-blue: hsla(197, 89%, 61%, 1);
+$risd-blue: hsla(220, 100%, 50%, 1);
+$white: hsla(200, 60%, 99%, 1);
+$lavender-web: hsla(248, 100%, 96%, 1);
+$electric-purple: hsla(277, 86%, 60%, 1);
+$medium-slate-blue: hsla(250, 100%, 67%, 1);
+$air-superiority-blue: hsla(201, 40%, 56%, 1);
+$yale-blue: hsla(217, 48%, 25%, 1);
+$bronze: rgb(255, 178, 63);
+$fandango: hsla(323, 53%, 48%, 1);
+
+@use "bulma/sass" with ($primary: $risd-blue,
+  $link: $medium-slate-blue,
+  $warning: $bronze,
+  $info: $electric-purple);
+
+
+
+#helpImg {
+  max-height: 100%;
+}
+
+;

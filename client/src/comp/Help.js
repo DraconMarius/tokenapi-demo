@@ -73,17 +73,17 @@ function Help({ type }) {
                             {info[type].img.map((item, index) => (
 
                                 <div className="is-justify-content-center" key={index}>
+                                    <p className="strong">{item.text}</p>
                                     <figure className="image">
-                                        <img src={item.src} className="helpImg" alt={`${type} Help gif`} />
+                                        <img src={item.src} key={index} id="helpImg" alt={`${type} Help gif`} height="auto" />
                                     </figure >
 
-                                    <p className="strong">{item.text}</p>
                                 </div>
 
 
                             ))}
                         </section>
-                        <footer class="modal-card-foot">
+                        <footer className="modal-card-foot">
                             Here to file a bug report:
                         </footer>
                     </div>

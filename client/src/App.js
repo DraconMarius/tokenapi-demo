@@ -1,7 +1,7 @@
 
-import 'bulma/css/bulma.min.css'
+// import 'bulma/css/bulma.min.css'
 import '@creativebulma/bulma-tooltip/dist/bulma-tooltip.min.css';
-import './App.css';
+import './App.scss';
 
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 

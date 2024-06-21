@@ -87,11 +87,11 @@ function Tx({ apiRes, icon }) {
                                     <tr key={index} >
                                         {/* <th>{new Date(tx.metadata.blockTimestamp).toString()}</th> */}
                                         <td
-                                            className="has-tooltip-arrow has-tooltip-warning"
+                                            className="has-tooltip-arrow "
                                             data-tooltip={new Date(tx.metadata.blockTimestamp).toLocaleString()}>
                                             {tx.metadata.age}</td>
                                         <td
-                                            className="has-tooltip-arrow has-tooltip-primary is-clickable "
+                                            className="has-tooltip-arrow  is-clickable "
                                             data-tooltip={tx.hash}
                                             onClick={() => copyString(tx.hash)}>
                                             <span className="is-align-item-center">
@@ -102,6 +102,7 @@ function Tx({ apiRes, icon }) {
                                             </span>
                                         </td>
                                         <td
+                                            className="is-clickable"
                                             onClick={() => copyString(tx.blockNum)}>
                                             <span className="is-align-item-center">
                                                 <span>{blockNum}</span>
@@ -119,7 +120,7 @@ function Tx({ apiRes, icon }) {
 
                                         </td>
                                         <td
-                                            className="has-tooltip-arrow has-tooltip-primary"
+                                            className="has-tooltip-arrow"
                                             data-tooltip={otherAdd}
                                             onClick={() => copyString(otherAdd)}>
                                             <span className="is-align-item-center">
