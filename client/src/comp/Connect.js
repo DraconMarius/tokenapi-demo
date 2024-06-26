@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSearch } from '../cont/searchContext';
 
+import walletIcon from '../assets/walletConnect.png'
+
 function Connect() {
     const { updateSearchParams } = useSearch();
     const [address, setAddress] = useState('');
@@ -52,7 +54,7 @@ function Connect() {
     return (
         <div>
             {btnDisp && (
-                <button className="icon has-text-weight-bold" onClick={() => setWalletDisp(true)}>+</button>
+                <button className="icon has-text-weight-bold" onClick={() => setWalletDisp(true)}><img src={walletIcon} className="is-1by1" /></button>
             )}
 
             <div className={`modal ${walletDisp ? 'is-active' : ''}`}>

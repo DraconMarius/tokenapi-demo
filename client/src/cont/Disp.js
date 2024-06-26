@@ -5,6 +5,7 @@ import { useSearch } from './searchContext';
 import TokenCont from './TokenCont'
 import TxCont from './TxCont'
 
+import { info } from '../util/info.js'
 
 import {
     getTokenBalance,
@@ -16,7 +17,6 @@ function Disp() {
     const [type, setType] = useState(searchParams.type || "default")
     const [apiRes, setApiRes] = useState();
     const [loading, setLoading] = useState(false);
-    const [selectedIndex, setIndex] = useState()
 
 
     useEffect(() => {
@@ -68,7 +68,34 @@ function Disp() {
 
     return (
         <div className="container">
-            {(loading || !apiRes || (type === "default")) ? <>Default Search Screen</> :
+            {(loading || !apiRes || (type === "default")) ?
+                <div className="block">
+                    <div className="">
+                        {Object.entries(info).map(([key, value]) => (
+
+                            <div className="card" key={key}>
+                                <header className="card-header">
+                                    <p className="card-header-title">
+                                        {value.title}
+                                    </p>
+                                </header>
+                                <div className="card-content">
+                                    {value.img.map((item, index) => (
+                                        <div key={index}>
+                                            <div className="content is-align-items-center is-justify-content-center">
+                                                <p>{item.text}</p>
+                                                <figure className="image">
+                                                    <img src={item.src} alt="Help Image" />
+                                                </figure>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                        ))}
+                    </div>
+                </div> :
                 (apiRes.error || !apiRes.wAddress) ? <>{`ERROR fetching ${type} for ${searchParams.walletAdd} on ${searchParams.net}`}</> :
                     (type === "balance") ?
                         <TokenCont apiRes={apiRes} /> :
