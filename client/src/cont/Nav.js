@@ -8,10 +8,10 @@ import { useSearch } from './searchContext';
 
 
 function Nav() {
-    // const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [address, setAddress] = useState('');
-    const [net, setNet] = useState('Eth');
     const { searchParams, updateSearchParams } = useSearch()
+    // const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [address, setAddress] = useState(searchParams.walletAdd);
+    const [net, setNet] = useState(searchParams.network);
 
     const blankState = {
         network: 'Eth',
@@ -55,11 +55,29 @@ function Nav() {
         document.getElementById('navbar').classList.toggle('is-active');
     }
 
-    useEffect(() => {
-        console.log(net);
-        console.log(address)
-    }, [net, address])
+    const handleNetChange = async (network) => {
+        if (searchParams.walletAdd) {
+            const search = {
+                ...searchParams,
+                network: network,
+                isNew: true
+            }
 
+            updateSearchParams(search);
+
+        }
+    }
+
+    useEffect(() => {
+
+        handleNetChange(net)
+
+    }, [net])
+
+    useEffect(() => {
+        setNet(searchParams.network)
+        setAddress(searchParams.walletAdd)
+    }, [searchParams.walletAdd, searchParams.network])
 
     return (
 
@@ -113,10 +131,10 @@ function Nav() {
                             className="input is-link"
                             type="text"
                             onChange={e => setAddress(e.target.value)}
-                            placeholder={`Address` || searchParams.walletAdd}
+                            placeholder={searchParams.walletAdd || `Address`}
                         />
                         <div className="select" >
-                            <select onChange={e => setNet(e.target.value)}>
+                            <select value={net} onChange={e => setNet(e.target.value)}>
                                 <option value="Eth">
                                     Ethereum
                                 </option>
