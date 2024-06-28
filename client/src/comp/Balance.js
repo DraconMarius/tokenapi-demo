@@ -11,7 +11,7 @@ function Balance({ contractAddress, name, symbol, balance, logo, network, icon }
     const etherscanAddress = `${scanUrl[network]}address/${contractAddress}`
 
     return (
-        <div className='card'>
+        <div className='card hero-background'>
             <header className="card-header">
                 <div className="card-header-title">
                     <div className="media-left">

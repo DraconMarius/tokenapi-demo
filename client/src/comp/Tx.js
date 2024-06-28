@@ -27,7 +27,7 @@ function Tx({ apiRes, icon }) {
     return (
         <>
             {!apiRes ? <>loading</> : (apiRes[dirRes].length === 0) ? <div className='card '><div className='card-content '>
-                <div className="content">
+                <div className="content ">
 
                     <div>
                         <FlapDisplay

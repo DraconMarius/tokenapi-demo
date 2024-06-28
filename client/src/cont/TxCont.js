@@ -92,7 +92,7 @@ function TxCont({ apiRes }) {
 
 
     return (
-        <div className='container'>
+        <div className='container '>
 
             Current displaying Transactions for Address on {apiRes.net}:
             <div className="container">
@@ -106,65 +106,69 @@ function TxCont({ apiRes }) {
                     <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
                 </a>
             </div>
+            <section className="hero is-fullheight-with-navbar">
 
+                <div className="hero-header">
 
-            <div className="level">
-                <div className="level-item">
+                    <div className="level">
+                        <div className="level-item">
 
-                    <p >Order? :</p>
-                    <div className="select" id="order">
-                        <select value={dir} onChange={e => setDir(e.target.value)}
-                            disabled={isNoData}>
-                            <option value="desc"> Descending</option>
-                            <option value="asc"> Ascending</option>
-                        </select>
+                            <p >Order? :</p>
+                            <div className="select" id="order">
+                                <select value={dir} onChange={e => setDir(e.target.value)}
+                                    disabled={isNoData}>
+                                    <option value="desc"> Descending</option>
+                                    <option value="asc"> Ascending</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="level-item">
+                            <p >Exclude Zeros? :</p>
+                            <div className="select" id="zero" >
+                                <select value={zeroOpt} onChange={e => setzeroOpt(e.target.value)}
+                                    disabled={isNoData}
+                                >
+                                    <option value={false}> False</option>
+                                    <option value={true}> True</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="level-item">
+                            <div className="button"
+                                onClick={() => handleUpdate()}
+                                disabled={isNoData}
+                            >
+                                Update Filter
+                            </div>
+                        </div>
+                    </div>
+                    <div className="level">
+                        <div className="level-item">
+                            <button className="button" disabled={isFirstPage} onClick={() => handlePageChange(false)}> Prev</button>
+                        </div>
+                        <div className="level-item">
+                            <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
+                        </div>
                     </div>
                 </div>
-                <div className="level-item">
-                    <p >Exclude Zeros? :</p>
-                    <div className="select" id="zero" >
-                        <select value={zeroOpt} onChange={e => setzeroOpt(e.target.value)}
-                            disabled={isNoData}
-                        >
-                            <option value={false}> False</option>
-                            <option value={true}> True</option>
-                        </select>
+
+                <div className="hero-body pt-1 pb-1 is-justify-content-center">
+
+                    <Tx apiRes={apiRes} icon={icon} />
+
+                </div>
+
+                <div className="hero-footer">
+                    <div className="level">
+                        <div className="level-item">
+                            <button className="button" disabled={isFirstPage} onClick={() => handlePageChange(false)}> Prev</button>
+                        </div>
+                        <div className="level-item">
+                            <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
+                        </div>
                     </div>
                 </div>
-                <div className="level-item">
-                    <div className="button"
-                        onClick={() => handleUpdate()}
-                        disabled={isNoData}
-                    >
-                        Update Filter
-                    </div>
-                </div>
-            </div>
-            <div className="level">
-                <div className="level-item">
-                    <button className="button" disabled={isFirstPage} onClick={() => handlePageChange(false)}> Prev</button>
-                </div>
-                <div className="level-item">
-                    <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
-                </div>
-            </div>
-
-            <section className="hero is-medium">
-
-
-                <Tx apiRes={apiRes} icon={icon} />
-
-
             </section>
-
-            <div className="level">
-                <div className="level-item">
-                    <button className="button" disabled={isFirstPage} onClick={() => handlePageChange(false)}> Prev</button>
-                </div>
-                <div className="level-item">
-                    <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
-                </div>
-            </div>
         </div>
 
     )

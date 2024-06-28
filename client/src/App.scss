@@ -37,3 +37,24 @@ $fandango: hsla(323, 53%, 48%, 1);
 }
 
 ;
+
+$background-light: url('./assets/alchemyL.png');
+$background-dark: url('./assets/alchemyD.png');
+
+
+.hero-background {
+  // Default light background
+  background-image: $background-light;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100vw;
+  height: 110%;
+
+  @media (prefers-color-scheme: dark) {
+    background-image: $background-dark;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100vw;
+    height: 110%;
+  }
+};

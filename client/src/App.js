@@ -17,20 +17,20 @@ function App() {
 
 
   return (
-    <div >
+
       <SearchProvider>
         <Router>
           <Nav />
-          <div className="container">
-            <Routes>
-              <Route exact path="/" element={<Navigate replace to="/search" />} />
-              <Route exact path="/search" element={<Disp />} />
-            </Routes>
-          </div>
+
+          <Routes>
+            <Route exact path="/" element={<Navigate replace to="/search" />} />
+            <Route exact path="/search" element={<Disp />} />
+          </Routes>
+
         </Router>
         {/* <Footer /> */}
       </SearchProvider>
-    </div >
+
   );
 }
 

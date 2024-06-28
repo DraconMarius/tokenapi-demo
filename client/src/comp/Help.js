@@ -11,9 +11,12 @@ function Help({ type }) {
     return (
 
         <>
-            <button className="icon"
+            <button
                 onClick={() => setOpen(true)}>
-                <img src={qMark} />
+                <figure className="image is-24x24">
+
+                    <img src={qMark} />
+                </figure>
             </button>
 
 
@@ -41,7 +44,9 @@ function Help({ type }) {
                             ))}
                         </section>
                         <footer className="modal-card-foot">
-                            Here to file a bug report:
+                            <a href="https://github.com/DraconMarius/tokenapi-demo/issues/new" target="_blank">
+                                -- Here to file a bug report --
+                            </a>
                         </footer>
                     </div>
                 </div>

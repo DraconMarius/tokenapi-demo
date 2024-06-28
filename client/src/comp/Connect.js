@@ -54,7 +54,7 @@ function Connect() {
     return (
         <div>
             {btnDisp && (
-                <button className="icon has-text-weight-bold" onClick={() => setWalletDisp(true)}><img src={walletIcon} className="is-1by1" /></button>
+                <button className="icon has-text-weight-bold" onClick={() => setWalletDisp(true)}><figure className="image is-16x16"> <img src={walletIcon} /></figure></button>
             )}
 
             <div className={`modal ${walletDisp ? 'is-active' : ''}`}>

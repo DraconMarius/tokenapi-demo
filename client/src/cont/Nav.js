@@ -104,7 +104,7 @@ function Nav() {
                     </div>
                     {searchParams.walletAdd ?
                         <>
-                            <div className="navbar-item" >
+                            <div className="navbar-item is-flex" >
                                 <div
                                     className="is-link is-clickable"
                                     onClick={() => handleSearch(net, address)}
@@ -125,7 +125,7 @@ function Nav() {
                 </div>
 
                 <div className="navbar-end">
-                    <div className="navbar-item">
+                    <div className="navbar-item pb-0 pt-0 is-align-items-center">
                         <input
                             name="walletAdd"
                             className="input is-link"
@@ -164,7 +164,7 @@ function Nav() {
                             Search
                         </div>
 
-                        <div className="ml-3 is-pulled-right">
+                        <div className=" navbar-item is-flex-direction-column p-0">
 
                             <div className="has-tooltip-arrow has-tooltip-left has-tooltip-warning"
                                 data-tooltip="Connect Wallet">

@@ -5,7 +5,7 @@ import { useSearch } from './searchContext';
 import TokenCont from './TokenCont'
 import TxCont from './TxCont'
 
-import { info } from '../util/info.js'
+import loading from '../assets/loading.gif'
 
 import {
     getTokenBalance,
@@ -61,45 +61,57 @@ function Disp() {
         }
     }, [searchParams.network, searchParams.type, searchParams.currentKey, searchParams.dir, searchParams.zeroOpt, searchParams.walletAdd, searchParams.pageKey]);
 
-    useEffect(() => {
-        console.log(type);
-
-    }, [type])
+    // useEffect(() => {
+    //     console.log("loading")
+    //     document.getElementsById("modal").classList.toggle('is-active')
+    // }, [loading])
 
     return (
-        <div className="container">
-            {(loading || !apiRes || (type === "default")) ?
-                <div className="block">
-                    <div className="">
-                        {Object.entries(info).map(([key, value]) => (
+        <div className="hero-background pb-auto">
+            {(loading) ?
+                <div className="modal is-active">
+                    <div className="modal-background">
 
-                            <div className="card" key={key}>
-                                <header className="card-header">
-                                    <p className="card-header-title">
-                                        {value.title}
-                                    </p>
-                                </header>
-                                <div className="card-content">
-                                    {value.img.map((item, index) => (
-                                        <div key={index}>
-                                            <div className="content is-align-items-center is-justify-content-center">
-                                                <p>{item.text}</p>
-                                                <figure className="image">
-                                                    <img src={item.src} alt="Help Image" />
-                                                </figure>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                        ))}
+                        <div className="modal-content">
+                            <figure className="image is1by1">
+                                {loading}
+                            </figure>
+                        </div>
                     </div>
-                </div> :
-                (apiRes.error || !apiRes.wAddress) ? <>{`ERROR fetching ${type} for ${searchParams.walletAdd} on ${searchParams.net}`}</> :
-                    (type === "balance") ?
-                        <TokenCont apiRes={apiRes} /> :
-                        <TxCont apiRes={apiRes} />
+                </div> : ((type === "default") || !apiRes) ?
+                    <section className="hero is-fullheight-with-navbar">
+
+                        <div className="hero-body columns" >
+
+
+                            <p className="title column">Token API Demo</p>
+
+
+                        </div>
+
+                        <div className="hero-foot">
+                            <nav className="tabs is-boxed is-fullwidth">
+                                <div className="container pt-0">
+                                    <ul>
+                                        <li>
+                                            <a href="https://docs.alchemy.com" target="_blank">Alchemy Docs</a>
+                                        </li>
+                                        <li>
+                                            <a href="https://github.com/DraconMarius/tokenapi-demo" target="_blank">Github</a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.linkedin.com/in/mari-ma-70771585" target="_blank">Contact</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </nav>
+                        </div>
+
+                    </section > :
+                    (apiRes.error || !apiRes.wAddress) ? <>{`ERROR fetching ${type} for ${searchParams.walletAdd} on ${searchParams.net}`}</> :
+                        (type === "balance") ?
+                            <TokenCont apiRes={apiRes} /> :
+                            <TxCont apiRes={apiRes} />
             }
         </div >
     )

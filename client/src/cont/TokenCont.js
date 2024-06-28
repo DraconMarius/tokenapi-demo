@@ -79,7 +79,7 @@ function TokenCont({ apiRes }) {
 
 
     return (
-        <div className="container">
+        <div className='container'>
             Current displaying Token Balances for Address:
             <div className="container">
                 <FlapDisplay
@@ -92,8 +92,8 @@ function TokenCont({ apiRes }) {
                     <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
                 </a>
             </div>
-            <section className="hero is-medium">
-                <div className="hero-body">
+            <section className="hero is-fullheight-with-navbar">
+                <div className="hero-body pb-1">
                     {(apiRes.balances.length === 0) ?
                         <>No Token Balance Detected!</> :
                         !(selectedIndex) ? <>Select Token below to see balance</> :
@@ -109,25 +109,28 @@ function TokenCont({ apiRes }) {
 
                     }
                 </div>
+                <div className="level">
+                    <div className="level-item">
+                        <button className="button" disabled={isFirstPage} onClick={() => handlePageChange(false)}> Prev</button>
+                    </div>
+                    <div className="level-item">
+                        <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
+                    </div>
+                </div>
+                <div className="container">
+
+                    <div
+                        className="buttons is-justify-content-center is-align-items-center">
+
+                        {apiRes.balances.map((token, index) => (
+
+                            <button className="tag" key={index} id={index} onClick={e => setIndex(e.target.id)}>{(token.symbol?.length < 8) ? token.symbol : (token.name || "no_name")}</button>
+
+                        )
+                        )}
+                    </div>
+                </div>
             </section>
-            <div className="level">
-                <div className="level-item">
-                    <button className="button" disabled={isFirstPage} onClick={() => handlePageChange(false)}> Prev</button>
-                </div>
-                <div className="level-item">
-                    <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
-                </div>
-            </div>
-            <div
-                className="buttons is-justify-content-center is-align-items-center">
-
-                {apiRes.balances.map((token, index) => (
-
-                    <button className="tag" key={index} id={index} onClick={e => setIndex(e.target.id)}>{(token.symbol?.length < 8) ? token.symbol : (token.name || "no_name")}</button>
-
-                )
-                )}
-            </div>
         </div >
 
     )
