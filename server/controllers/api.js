@@ -95,7 +95,7 @@ router.get('/balance/:net/:address', async (req, res) => {
         console.log(err);
         res.status(500).json({ error: err.message });
     };
-})
+});
 
 
 router.get('/transactions/:net/:address', async (req, res) => {
@@ -276,5 +276,37 @@ router.get('/transactions/:net/:address', async (req, res) => {
 
 
 })
+
+router.get('/receipt/:net/:hash', async (req, res) => {
+    console.log('==============/Receipts==============')
+
+    const chosenNet = req.params.net
+    const chosenConfig = configs[chosenNet];
+    console.log(chosenConfig)
+    const hash = req.params.hash;
+
+    const fetchReceipt = async (net, chosenConfig, hash) => {
+        const alchemy = new Alchemy(chosenConfig);
+        try {
+            const receipt = await alchemy.core.getTransactionReceipt(hash)
+            return {
+                net: net,
+                receipt: receipt
+            }
+        } catch (err) {
+            console.error(`Failed to fetch Receipt`, err);
+            throw new Error(err.message)
+        };
+    };
+
+    try {
+        const results = await fetchReceipt(chosenNet, chosenConfig, hash);
+        res.json(results);
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ error: err.message });
+    };
+});
+
 
 module.exports = router;

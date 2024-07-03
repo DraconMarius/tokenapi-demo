@@ -36,3 +36,18 @@ export const getTransactions = async (network, address, pageKey, order, zero) =>
         console.error(`Failed to fetch transaction history for ${address} on ${network}`, err)
     }
 }
+
+export const getReceipt = async (network, hash) => {
+    const fetchURL = `/api/receipt/${network}/${hash}`
+    console.log(fetchURL)
+    try {
+        const response = await fetch(fetchURL);
+        if (!response.ok) throw new Error('receipt fetch error');
+
+        const data = await response.json();
+
+        return data;
+    } catch (err) {
+        console.error(`Failed to fetch tx receipt for ${hash} on ${network}`)
+    }
+}

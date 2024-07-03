@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { useSearch } from '../cont/searchContext';
 
 import { FlapDisplay, Presets } from 'react-split-flap-effect';
 
-
-import scanUrl from '../util/scan'
+import Focus from './Focus'
+import scanUrl from '../util/scan';
 
 function Tx({ apiRes, icon }) {
     const { searchParams, updateSearchParams } = useSearch()
-    // console.log("transaction log", apiRes)
+    const [isOpen, setOpen] = useState(false)
+    const focusedHash = useRef()
 
     const copyString = (string) => {
         navigator.clipboard.writeText(string)
@@ -19,10 +20,25 @@ function Tx({ apiRes, icon }) {
     const dirRes = `${searchParams.dir}Res`
     console.log(dirRes)
 
+    const handleFocus = (hash) => {
+        focusedHash.current = hash
+        console.log(focusedHash.current)
+        if (focusedHash.current !== (undefined || null)) {
+            setOpen(!isOpen)
+            // document.getElementById('focus-view').classList.toggle('is-active')
+        }
+    }
+
+    // useEffect(() => {
+    //     if (focusedHash) {
+    //         console.log(focusedHash)
+
+    //     }
+    // }, [focusedHash, handleFocus, setHash])
+
     if (!apiRes[dirRes]) {
         return <p>No Transaction Data Available</p>;
     }
-
 
     return (
         <>
@@ -93,7 +109,7 @@ function Tx({ apiRes, icon }) {
                                         <td
                                             className="has-tooltip-arrow  is-clickable "
                                             data-tooltip={tx.hash}
-                                            onClick={() => copyString(tx.hash)}>
+                                            onClick={() => handleFocus(tx.hash)}>
                                             <span className="is-align-item-center">
                                                 <span>{`${tx.hash.slice(0, 10)}...`}</span>
                                                 <a href={etherscanHash} className="is-pulled-right" target="_blank">
@@ -144,6 +160,9 @@ function Tx({ apiRes, icon }) {
 
                         </tbody>
                     </table>
+                    {isOpen ? <div className="modal is-active" id="focus-view">
+                        <Focus net={searchParams.network} hash={focusedHash.current} setOpen={setOpen} />
+                    </div> : <></>}
                 </div>
             }
         </>
