@@ -5,6 +5,7 @@ import { useSearch } from '../cont/searchContext';
 import { FlapDisplay, Presets } from 'react-split-flap-effect';
 
 import Focus from './Focus'
+import focusIcon from '../assets/eye.png'
 import scanUrl from '../util/scan';
 
 function Tx({ apiRes, icon }) {
@@ -107,12 +108,15 @@ function Tx({ apiRes, icon }) {
                                             data-tooltip={new Date(tx.metadata.blockTimestamp).toLocaleString()}>
                                             {tx.metadata.age}</td>
                                         <td
-                                            className="has-tooltip-arrow  is-clickable "
+                                            className="has-tooltip-arrow"
                                             data-tooltip={tx.hash}
-                                            onClick={() => handleFocus(tx.hash)}>
+                                            onClick={() => copyString(tx.hash)}>
                                             <span className="is-align-item-center">
-                                                <span>{`${tx.hash.slice(0, 10)}...`}</span>
-                                                <a href={etherscanHash} className="is-pulled-right" target="_blank">
+                                                <span>{`${tx.hash.slice(0, 10)}... `}</span>
+                                                <div className="is-pulled-right is-clickable" target="_blank">
+                                                    <span className="icon is-small is-align-self-center" onClick={() => handleFocus(tx.hash)} ><img src={focusIcon} /></span>
+                                                </div>
+                                                <a href={etherscanHash} className="is-pulled-right pl-1 pr-2" target="_blank">
                                                     <span className="icon is-small is-align-self-center" ><img src={icon} /></span>
                                                 </a>
                                             </span>
@@ -161,7 +165,7 @@ function Tx({ apiRes, icon }) {
                         </tbody>
                     </table>
                     {isOpen ? <div className="modal is-active" id="focus-view">
-                        <Focus net={searchParams.network} hash={focusedHash.current} setOpen={setOpen} />
+                        <Focus net={searchParams.network} hash={focusedHash.current} setOpen={setOpen} icon={icon} />
                     </div> : <></>}
                 </div>
             }

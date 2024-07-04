@@ -99,17 +99,16 @@ function Focus({ net, hash, setOpen }) {
                             </tr>
                             <tr>
                                 <th className=""> Cumulative Gas</th>
-                                <td>{receipt.receipt.cumulativeGasUsed.hex}</td>
+                                <td>{parseInt(receipt.receipt.cumulativeGasUsed.hex, 16)}</td>
                             </tr>
                             <tr>
                                 <th className=""> Gas Used</th>
-                                <td>{receipt.receipt.gasUsed.hex}</td>
+                                <td>{`${Intl.NumberFormat().format(parseInt(receipt.receipt.gasUsed.hex, 16))} Unit`}</td>
                             </tr>
                             <tr>
                                 <th className=""> Gas Price</th>
-                                <td>{receipt.receipt.effectiveGasPrice.hex}</td>
+                                <td>{`${(parseInt(receipt.receipt.effectiveGasPrice.hex, 16) / (Math.pow(10, 9)))} Gwei`}</td>
                             </tr>
-
                         </tbody>
                     </table>
 
