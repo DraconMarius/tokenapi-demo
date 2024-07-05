@@ -23,18 +23,21 @@ function Help({ type }) {
             {isOpen ?
                 <div className="modal is-active">
                     <div className="modal-background"></div>
-                    <div className="modal-card">
+                    <div className="modal-card helpCard">
 
                         <header className="modal-card-head">
                             <p className="modal-card-title">{info[type].title}</p>
                             <button className="delete" aria-label="close" onClick={() => setOpen(false)}></button>
                         </header>
-                        <section className="modal-card-body">
+                        <section className="modal-card-body ">
                             {info[type].img.map((item, index) => (
 
-                                <div className="is-justify-content-center" key={index}>
-                                    <p className="strong">{item.text}</p>
-                                    <figure className="image">
+                                <div className="box is-justify-content-center" key={index}>
+                                    <div className="block">
+
+                                        <p className="strong">{item.text}</p>
+                                    </div>
+                                    <figure className="image is-large">
                                         <img src={item.src} key={index} id="helpImg" alt={`${type} Help gif`} height="auto" />
                                     </figure >
 
@@ -43,7 +46,7 @@ function Help({ type }) {
 
                             ))}
                         </section>
-                        <footer className="modal-card-foot">
+                        <footer className="modal-card-foot is-justify-content-center">
                             <a href="https://github.com/DraconMarius/tokenapi-demo/issues/new" target="_blank">
                                 -- Here to file a bug report --
                             </a>
