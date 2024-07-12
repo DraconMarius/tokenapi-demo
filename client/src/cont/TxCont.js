@@ -36,7 +36,10 @@ function TxCont({ apiRes }) {
 
     const isFirstPage = (searchParams.prevKeys && (searchParams.prevKeys.length === 0) && !searchParams.currentKey);
     const isLastPage = Object.keys(apiRes?.pageKey || {}).length === 0;
-    const isNoData = apiRes?.[`${searchParams.dir}Res`]?.length === 0
+    const isNoData = apiRes?.[`${searchParams.dir}Res`]?.length === 0;
+    let mismatchSetting = ((searchParams.dir !== dir) || (searchParams.zeroOpt !== zeroOpt))
+
+
 
     const handlePageChange = (isNext) => {
         console.log(isNext, "isNext?")
@@ -90,6 +93,10 @@ function TxCont({ apiRes }) {
 
     }, [searchParams.network]);
 
+    useEffect(() => {
+        document.querySelector(".updateBtn").classList.toggle("is-hidden")
+    }, [mismatchSetting])
+
 
     return (
         <div className='container '>
@@ -133,7 +140,7 @@ function TxCont({ apiRes }) {
                                 </select>
                             </div>
                         </div>
-                        <div className="level-item">
+                        <div className="level-item updateBtn is-hidden" >
                             <div className="button"
                                 onClick={() => handleUpdate()}
                                 disabled={isNoData}
@@ -144,10 +151,10 @@ function TxCont({ apiRes }) {
                     </div>
                     <div className="level">
                         <div className="level-item">
-                            <button className="button" disabled={isFirstPage} onClick={() => handlePageChange(false)}> Prev</button>
+                            <button className="button" disabled={(isFirstPage || mismatchSetting)} onClick={() => handlePageChange(false)}> Prev</button>
                         </div>
                         <div className="level-item">
-                            <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
+                            <button className="button" disabled={(isLastPage || mismatchSetting)} onClick={() => handlePageChange(true)}> Next</button>
                         </div>
                     </div>
                 </div>
