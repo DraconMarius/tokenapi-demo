@@ -66,6 +66,16 @@ router.get('/balance/:net/:address', async (req, res) => {
 
             });
 
+            nonZeroBalances.sort((a, b) => {
+                if (a.logo && !b.logo) {
+                    return -1;
+                } else if (!a.logo && b.logo) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            });
+
             let res = nonZeroBalances.map(token => {
                 //converting balace to human-readable format based on dec place
                 let balance = Number(token.rawBalance) / Math.pow(10, token.decimals);

@@ -30,7 +30,7 @@ $fandango: hsla(323, 53%, 48%, 1);
   $warning: $bronze,
   $info: $electric-purple);
 
-
+@import "../node_modules/bulma-list/sass/bulma-list.scss";
 
 #helpImg {
   max-height: 100%;
@@ -57,9 +57,10 @@ $background-dark: url('./assets/alchemyD.png');
     width: 100vw;
     height: 110%;
   }
-};
+}
+
+;
 
 .helpCard {
   width: 80vw;
 }
-

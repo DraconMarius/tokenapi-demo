@@ -45,13 +45,16 @@
 
   To query blockchain token data using the Alchemy SDK requires the follow params:
  
-  *You are also able to connect your browser extension wallets that utilizes the [EIPS-6963](https://eips.ethereum.org/EIPS/eip-6963) which helps avoid conflict and improves user experience. See [Snippets](#snippets) for code sample*
+  > *You are also able to connect your browser extension wallets that utilizes the [EIPS-6963](https://eips.ethereum.org/EIPS/eip-6963) which helps avoid conflict and improves user experience. See [Snippets](#snippets) for code sample*
+
   > ![gif0](/client/src/assets/connect.gif)
 
   > **Owned Tokens and metaData**
   > - *network*
   > - *wallet address*
   > - *pageKey (optional)*
+
+
   > ![gif1](/client/src/assets/balance.gif)
 
   > **All in/out bound transactions associated from a Contract on specific Network**
@@ -61,11 +64,15 @@
   > - *sorting direction (optional)*
   > - *exclude Zero value (optional)*
   > - *type of transactions: currently includes all type supported on mainnets [external, erc20, erc721, erc1155, specialnft]*
+
+
   > ![gif2](/client/src/assets/txfilter.gif)
 
   > **Transaction Receipts**
   > - *network*
   > - *Transaction Hash*
+
+  
   > ![gif3](/client/src/assets/focus.gif)
 
 

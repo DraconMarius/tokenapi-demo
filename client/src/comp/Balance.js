@@ -11,53 +11,42 @@ function Balance({ contractAddress, name, symbol, balance, logo, network, icon }
     const etherscanAddress = `${scanUrl[network]}address/${contractAddress}`
 
     return (
-        <div className='card hero-background'>
-            <header className="card-header">
-                <div className="card-header-title">
-                    <div className="media-left">
+        <div className='list-item box'>
+            <div className="list-item-image">
+                <figure className="image is-48x48">
+                    <img src={logo} />
+                </figure>
+            </div>
+            <div className="list-item-content">
+                <div className="container is-align-items-center">
+                    <span className="tag is-primary is-light mr-3">{symbol}</span>
+                    <span className="tag is-link is-light">{name}</span>
 
-                        <img className="image is-48x48" src={logo} />
-                    </div>
-                    <div className="container is-align-items-center">
-                        <span className="tag is-primary is-light ">{symbol}</span>
-                        <span className="tag is-link is-light">{name}</span>
-                        <a href={etherscanAddress} target="_blank" className="is-align-self-center is-pulled-right">
-                            <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
-                        </a>
-                    </div>
+                    <a href={etherscanAddress} target="_blank" className="is-align-self-center is-pulled-right">
+                        <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
+                    </a>
                 </div>
-                {/* <button className="card-header-icon" aria-label="more options" >
-                    <img className="icon" src={dropdown} />
-
-
-                </button> */}
-            </header>
-            <div className='card-content' id={name}>
-                <div className="content">
-
+                <div className="list-item-title">{contractAddress}</div>
+                <div className="list-item-description">
                     <div>
-                        <FlapDisplay
-                            className="darBordered"
-                            chars={Presets.ALPHANUM + ',.!'}
-                            length={42}
-                            timing={30}
-                            hinge={true}
-                            value={contractAddress} />
+                     
+                            {`Token Balance: `}
 
-                    </div>
-                    <div>
                         <FlapDisplay
-                            className="darBordered"
-                            chars={Presets.ALPHANUM + ',.:!'}
-                            length={42}
-                            timing={45}
+                            className="darBordered is-pulled-right pt-1"
+                            chars={Presets.ALPHANUM + '.+'}
+                            length={25}
+                            timing={1}
                             hinge={true}
-                            value={`Balance:           ${balance}`} />
+                            value={`${balance}`} />
                     </div>
+
                 </div>
             </div>
 
         </div>
+
+
 
 
 
