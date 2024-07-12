@@ -15,7 +15,7 @@ import scanUrl from '../util/scan'
 
 function TokenCont({ apiRes }) {
     const { searchParams, updateSearchParams } = useSearch();
-    const [selectedIndex, setIndex] = useState();
+    // const [selectedIndex, setIndex] = useState();
     const [icon, setIcon] = useState();
 
 
@@ -93,20 +93,34 @@ function TokenCont({ apiRes }) {
                 </a>
             </div>
             <section className="hero is-fullheight-with-navbar">
-                <div className="hero-body pb-1">
+                <div className="level hero-head">
+                    <div className="level-item">
+                        <button className="button" disabled={isFirstPage} onClick={() => handlePageChange(false)}> Prev</button>
+                    </div>
+                    <div className="level-item">
+                        <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
+                    </div>
+                </div>
+                <div className="hero-body pb-1 pt-0 is-justify-content-center">
+
                     {(apiRes.balances.length === 0) ?
                         <>No Token Balance Detected!</> :
-                        !(selectedIndex) ? <>Select Token below to see balance</> :
-                            <Balance
-                                contractAddress={apiRes.balances[selectedIndex].contractAddress}
-                                name={apiRes.balances[selectedIndex].name || "no_name"}
-                                symbol={apiRes.balances[selectedIndex].symbol || "null"}
-                                balance={apiRes.balances[selectedIndex].balance}
-                                logo={apiRes.balances[selectedIndex].logo || "https://placehold.co/48X48"}
-                                network={searchParams.network}
-                                icon={icon}
-                            />
+                        <div className="list ">
+                            {apiRes.balances.map((token, index) => (
 
+                                <Balance
+                                    key={index}
+                                    contractAddress={token.contractAddress}
+                                    name={token.name || "no_name"}
+                                    symbol={token.symbol || "null"}
+                                    balance={token.balance}
+                                    logo={token.logo || `https://placehold.co/48X48?text=${token.symbol}`}
+                                    network={searchParams.network}
+                                    icon={icon}
+                                />
+                            )
+                            )}
+                        </div>
                     }
                 </div>
                 <div className="level">
@@ -115,19 +129,6 @@ function TokenCont({ apiRes }) {
                     </div>
                     <div className="level-item">
                         <button className="button" disabled={isLastPage} onClick={() => handlePageChange(true)}> Next</button>
-                    </div>
-                </div>
-                <div className="container">
-
-                    <div
-                        className="buttons is-justify-content-center is-align-items-center">
-
-                        {apiRes.balances.map((token, index) => (
-
-                            <button className="tag" key={index} id={index} onClick={e => setIndex(e.target.id)}>{(token.symbol?.length < 8) ? token.symbol : (token.name || "no_name")}</button>
-
-                        )
-                        )}
                     </div>
                 </div>
             </section>

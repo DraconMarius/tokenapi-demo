@@ -50,5 +50,31 @@ export const info = {
             text: 'When you click on a specific cell for `Hash #`, `Block #`, `Address #`, it will automatically copy it to your clipboard'
         }
         ]
+    }, balanceP: {
+        title: "Balance View:",
+        img: [{
+            src: balance,
+            text: 'Here you are able to view all tokens currently owned by clicking the token name located at the bottom of this screen'
+        },
+        {
+            src: scan,
+            text: 'Clicking on the network logo to take you directly to the various blockchain explorer respectively'
+        }
+        ]
+    },
+    transactionP: {
+        title: "Transaction View",
+        img: [{
+            src: txfilter,
+            text: 'Within the transaction table, you can change how the Alchemy SDK return the transaction datas, just press update filter when you are reaady'
+        }, {
+            src: focus,
+            text: 'By clicking on the `EYE`-con, you can pull up additional info from the receipt of that transaction'
+        },
+        {
+            src: clipboard,
+            text: 'When you click on a specific cell for `Hash #`, `Block #`, `Address #`, it will automatically copy it to your clipboard'
+        }
+        ]
     }
 }

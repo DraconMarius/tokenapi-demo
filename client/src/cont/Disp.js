@@ -67,7 +67,7 @@ function Disp() {
     // }, [loading])
 
     return (
-        <div className="hero-background pb-auto">
+        <div className="hero-background">
             {(loading) ?
                 <div className="modal is-active">
                     <div className="modal-background">
