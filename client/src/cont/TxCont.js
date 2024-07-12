@@ -94,7 +94,9 @@ function TxCont({ apiRes }) {
     }, [searchParams.network]);
 
     useEffect(() => {
-        document.querySelector(".updateBtn").classList.toggle("is-hidden")
+        mismatchSetting ?
+            document.querySelector(".updateBtn").classList.remove("is-hidden") :
+            document.querySelector(".updateBtn").classList.add("is-hidden")
     }, [mismatchSetting])
 
 
@@ -143,7 +145,7 @@ function TxCont({ apiRes }) {
                         <div className="level-item updateBtn is-hidden" >
                             <div className="button"
                                 onClick={() => handleUpdate()}
-                                disabled={isNoData}
+                                disabled={!mismatchSetting}
                             >
                                 Update Filter
                             </div>
