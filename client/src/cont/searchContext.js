@@ -13,7 +13,7 @@ export const SearchProvider = ({ children }) => {
         currentKey: '',
         type: 'default',
         dir: "desc",
-        zeroOpt: false
+        zeroOpt: "false"
     });
 
     const updateSearchParams = (newParams) => {

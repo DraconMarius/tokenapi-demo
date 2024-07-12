@@ -22,7 +22,7 @@ function Nav() {
         currentKey: '',
         type: '',
         dir: "desc",
-        zeroOpt: false
+        zeroOpt: "false"
     }
 
     const handleSearch = async (network, address) => {

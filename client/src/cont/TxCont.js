@@ -37,7 +37,7 @@ function TxCont({ apiRes }) {
     const isFirstPage = (searchParams.prevKeys && (searchParams.prevKeys.length === 0) && !searchParams.currentKey);
     const isLastPage = Object.keys(apiRes?.pageKey || {}).length === 0;
     const isNoData = apiRes?.[`${searchParams.dir}Res`]?.length === 0;
-    let mismatchSetting = ((searchParams.dir !== dir) || (searchParams.zeroOpt !== zeroOpt))
+    let mismatchSetting = ((searchParams.zeroOpt !== zeroOpt) || (searchParams.dir !== dir))
 
 
 
@@ -93,11 +93,20 @@ function TxCont({ apiRes }) {
 
     }, [searchParams.network]);
 
-    useEffect(() => {
-        mismatchSetting ?
-            document.querySelector(".updateBtn").classList.remove("is-hidden") :
-            document.querySelector(".updateBtn").classList.add("is-hidden")
-    }, [mismatchSetting])
+    // useEffect(() => {
+    //     console.log(`dir: ${dir}, zeroOpt: ${zeroOpt}`);
+    //     console.log(`paramDir: ${searchParams.dir}, paramOpt: ${searchParams.zeroOpt}`);
+    //     console.log(`Mismatch Setting: ${mismatchSetting}`);
+
+    //     const updateBtn = document.querySelector(".updateBtn");
+    //     if (updateBtn) {
+    //         if (mismatchSetting) {
+    //             updateBtn.classList.remove("is-hidden");
+    //         } else {
+    //             updateBtn.classList.add("is-hidden");
+    //         }
+    //     }
+    // }, [mismatchSetting, dir, zeroOpt, searchParams.dir, searchParams.zeroOpt]);
 
 
     return (
@@ -137,12 +146,12 @@ function TxCont({ apiRes }) {
                                 <select value={zeroOpt} onChange={e => setzeroOpt(e.target.value)}
                                     disabled={isNoData}
                                 >
-                                    <option value={false}> False</option>
-                                    <option value={true}> True</option>
+                                    <option value={"false"}> False</option>
+                                    <option value={"true"}> True</option>
                                 </select>
                             </div>
                         </div>
-                        <div className="level-item updateBtn is-hidden" >
+                        <div className={`level-item updateBtn ${mismatchSetting ? '' : 'is-hidden'}`} >
                             <div className="button"
                                 onClick={() => handleUpdate()}
                                 disabled={!mismatchSetting}
