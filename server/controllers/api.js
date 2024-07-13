@@ -318,5 +318,186 @@ router.get('/receipt/:net/:hash', async (req, res) => {
     };
 });
 
+router.get('/tokentx/:net/:wallet/:token', async (req, res) => {
+
+    console.log('==============/Token/Transaction==============')
+
+    const chosenNet = req.params.net
+    const chosenConfig = configs[chosenNet];
+    console.log(chosenConfig)
+    const wAddress = req.params.wallet;
+    const tAddress = req.params.token;
+    const outpageKey = req.query.outpgKey || null
+    const inpageKey = req.query.inpgKey || null
+    const order = req.query.order || "desc"
+    const zero = (req.query.zero === "false") ? false : true //making sure to pass boolean instead of string, sorry that it is a lil bit scrappy
+
+    console.log(`inKey: ${inpageKey}, outKey: ${outpageKey}, zero:${zero}, order: ${order}`)
+    // console.log(typeof (zero))
+
+
+    const createParams = (pageKey, otherOpts) => {
+        if (pageKey) {
+            return { ...otherOpts, pageKey: pageKey }
+        } else return otherOpts;
+    };
+
+    const inboundParams = createParams(inpageKey, {
+        order: order,
+        toAddress: wAddress,
+        contractAddresses: [tAddress],
+        excludeZeroValue: true,
+        category: ["erc20", "erc721", "erc1155"],
+        maxCount: 50,
+        withMetadata: true
+    });
+
+    const outboundParams = createParams(outpageKey, {
+        order: order,
+        contractAddresses: [tAddress],
+        fromAddress: wAddress,
+        excludeZeroValue: true,
+        category: ["erc20", "erc721", "erc1155"],
+        maxCount: 50,
+        withMetadata: true
+    });
+
+
+    const fetchTransaction = async (chosenConfig, option) => {
+
+        const params = (option === "outbound") ? outboundParams : inboundParams
+
+        console.log(params)
+
+        const alchemy = new Alchemy(chosenConfig)
+
+        const fetchTokenMetadata = async (tokenAddress, alchemy) => {
+            try {
+                const metadata = await alchemy.core.getTokenMetadata(tokenAddress);
+                return metadata;
+            } catch (error) {
+                console.error("Error fetching token metadata for address:", tokenAddress, error.message);
+                return null;
+            }
+        };
+
+        const addmData = async (txs, alchemy) => {
+            const promises = txs.map(async (tx) => {
+                if ((tx.category === "erc20") && (tx.value !== "0")) {
+                    const mData = await fetchTokenMetadata(tx.rawContract.address, alchemy)
+                    return { ...tx, mData: mData };
+                }
+                return tx;
+            })
+            return Promise.all(promises)
+        }
+
+        try {
+            const transactions = await alchemy.core.getAssetTransfers(params)
+            const txWithMetadata = await addmData(transactions.transfers, alchemy);
+
+            const nextPageKey = transactions.pageKey
+
+            // console.log(transactions)
+
+
+            return {
+                res: { ...transactions, transfers: txWithMetadata },
+                pageKey: nextPageKey
+            }
+
+        } catch (err) {
+            console.error(`Failed to fetch Token Transaction in function`, err.message);
+            return { error: err.message }
+        }
+    }
+
+    try {
+        //order
+        const mergeAndSortTransactions = (outTransactions, inTransactions) => {
+            // updated to handle potentially empty array when one direction TX results ends
+            const outTransfers = outTransactions.res ? outTransactions.res.transfers : [];
+            const inTransfers = inTransactions.res ? inTransactions.res.transfers : [];
+
+            // age calculation
+            const combined = [
+                ...outTransfers.map(t => ({
+                    ...t,
+                    metadata: {
+                        ...t.metadata,
+                        age: calcAge(t.metadata.blockTimestamp)
+                    }
+                })),
+                ...inTransfers.map(t => ({
+                    ...t,
+                    metadata: {
+                        ...t.metadata,
+                        age: calcAge(t.metadata.blockTimestamp)
+                    }
+                }))
+            ];
+
+            // Sort by timestamp, based on the order in the query
+            if (order === "desc") {
+                combined.sort((a, b) => new Date(b.metadata.blockTimestamp) - new Date(a.metadata.blockTimestamp));
+            } else {
+                combined.sort((a, b) => new Date(a.metadata.blockTimestamp) - new Date(b.metadata.blockTimestamp));
+            }
+            return combined;
+        };
+
+        // const [outboundRes, inboundRes] = await Promise.all([
+        //     fetchTransaction(chosenConfig, "outbound"),
+        //     fetchTransaction(chosenConfig, "inbound")]
+        // )
+
+        const promises = [];
+        if (!outpageKey || !inpageKey) { // Check if initial query or pagination
+            // Initial query 
+            promises.push(fetchTransaction(chosenConfig, "outbound"));
+
+            promises.push(fetchTransaction(chosenConfig, "inbound"));
+
+        } else {
+            // Only query directions with a valid pageKey otherwise push empty array
+            if (outpageKey) {
+                promises.push(fetchTransaction(chosenConfig, "outbound"));
+            } else {
+                promises.push([])
+            };
+
+            if (inpageKey) {
+                promises.push(fetchTransaction(chosenConfig, "inbound"));
+            } else {
+                promises.push([])
+            };
+        }
+
+        const results = await Promise.all(promises)
+
+        const sortedRes = mergeAndSortTransactions(results[0], results[1])
+
+        const keyObj = {
+            outboundKey: results[0] ? results[0]?.res?.pageKey : null,
+            inboundKey: results[1] ? results[1]?.res?.pageKey : null
+        }
+
+
+
+        res.json({
+            net: chosenNet,
+            wAddress: wAddress,
+            tAddress: tAddress,
+            [`${order}Res`]: sortedRes,
+            pageKey: keyObj
+        })
+
+    } catch (err) {
+        console.error("Failed to fetch Token Transactions @ Promise", err.message);
+        res.status(500).json({ error: err.message })
+    }
+
+
+});
 
 module.exports = router;

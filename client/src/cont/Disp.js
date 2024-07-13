@@ -5,7 +5,7 @@ import { useSearch } from './searchContext';
 import TokenCont from './TokenCont'
 import TxCont from './TxCont'
 
-import loading from '../assets/loading.gif'
+import loadingIcon from '../assets/loading.gif'
 
 import {
     getTokenBalance,
@@ -59,7 +59,7 @@ function Disp() {
         if (searchParams.walletAdd && searchParams.network) {
             fetchData();
         }
-    }, [searchParams.network, searchParams.type, searchParams.currentKey, searchParams.dir, searchParams.zeroOpt, searchParams.walletAdd, searchParams.pageKey]);
+    }, [searchParams, searchParams.network, searchParams.type, searchParams.currentKey, searchParams.dir, searchParams.zeroOpt, searchParams.walletAdd, searchParams.pageKey]);
 
     // useEffect(() => {
     //     console.log("loading")
@@ -73,9 +73,9 @@ function Disp() {
                     <div className="modal-background">
 
                         <div className="modal-content">
-                            <figure className="image is1by1">
-                                {loading}
-                            </figure>
+                           <div className="image is-1by1">
+                            <img src={loadingIcon} alt="loading gif" />
+                        </div>
                         </div>
                     </div>
                 </div> : ((type === "default") || !apiRes) ?
@@ -94,13 +94,13 @@ function Disp() {
                                 <div className="container pt-0">
                                     <ul>
                                         <li>
-                                            <a href="https://docs.alchemy.com" target="_blank">Alchemy Docs</a>
+                                            <a href="https://docs.alchemy.com" target="_blank" rel="noreferrer">Alchemy Docs</a>
                                         </li>
                                         <li>
-                                            <a href="https://github.com/DraconMarius/tokenapi-demo" target="_blank">Github</a>
+                                            <a href="https://github.com/DraconMarius/tokenapi-demo" target="_blank" rel="noreferrer">Github</a>
                                         </li>
                                         <li>
-                                            <a href="https://www.linkedin.com/in/mari-ma-70771585" target="_blank">Contact</a>
+                                            <a href="https://www.linkedin.com/in/mari-ma-70771585" target="_blank" rel="noreferrer">Contact</a>
                                         </li>
                                     </ul>
                                 </div>
