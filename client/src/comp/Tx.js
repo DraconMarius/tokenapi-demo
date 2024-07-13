@@ -59,7 +59,7 @@ function Tx({ apiRes, icon }) {
                 </div>
             </div>
             </div> :
-                <div className="table-container ">
+                <div className={`table-container ${(searchParams.type === "balance") ? 'tokenTx' : ''}`}>
                     <table className="table is-justify-content-center is-align-content-center is-bordered is-striped is-fullwidth is-hoverable is-narrow">
                         <thead>
                             <tr>
@@ -113,10 +113,10 @@ function Tx({ apiRes, icon }) {
                                             onClick={() => copyString(tx.hash)}>
                                             <span className="is-align-item-center">
                                                 <span>{`${tx.hash.slice(0, 10)}... `}</span>
-                                                <div className="is-pulled-right is-clickable" target="_blank">
+                                                <div className="is-pulled-right is-clickable">
                                                     <span className="icon is-small is-align-self-center" onClick={() => handleFocus(tx.hash)} ><img src={focusIcon} /></span>
                                                 </div>
-                                                <a href={etherscanHash} className="is-pulled-right pl-1 pr-2" target="_blank">
+                                                <a href={etherscanHash} className="is-pulled-right pl-1 pr-2" target="_blank" rel="noreferrer">
                                                     <span className="icon is-small is-align-self-center" ><img src={icon} /></span>
                                                 </a>
                                             </span>
@@ -126,7 +126,7 @@ function Tx({ apiRes, icon }) {
                                             onClick={() => copyString(tx.blockNum)}>
                                             <span className="is-align-item-center">
                                                 <span>{blockNum}</span>
-                                                <a href={etherscanBlock} className="is-pulled-right" target="_blank">
+                                                <a href={etherscanBlock} className="is-pulled-right" target="_blank" rel="noreferrer">
                                                     <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
                                                 </a>
                                             </span>
@@ -145,7 +145,7 @@ function Tx({ apiRes, icon }) {
                                             onClick={() => copyString(otherAdd)}>
                                             <span className="is-align-item-center">
                                                 <span>{formatAdd(otherAdd)}</span>
-                                                <a href={etherscanAdd} className="is-pulled-right" target="_blank">
+                                                <a href={etherscanAdd} className="is-pulled-right" target="_blank" rel="noreferrer">
                                                     <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
                                                 </a>
                                             </span>

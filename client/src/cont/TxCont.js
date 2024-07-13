@@ -120,7 +120,7 @@ function TxCont({ apiRes }) {
                     length={42}
                     timing={60}
                     value={apiRes.wAddress} />
-                <a href={etherscanWallet} target="_blank" className="pl-3 is-align-self-center">
+                <a href={etherscanWallet} target="_blank" rel="noreferrer" className="pl-3 is-align-self-center">
                     <span className="icon is-small is-align-self-center"  ><img src={icon} /></span>
                 </a>
             </div>

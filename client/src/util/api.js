@@ -14,7 +14,7 @@ export const getTokenBalance = async (network, address, pageKey) => {
         console.error(`Failed to fetch token balance for '${address}' on ${network}`, err)
         return { error: err }
     }
-}
+};
 
 export const getTransactions = async (network, address, pageKey, order, zero) => {
     console.log(pageKey)
@@ -35,7 +35,7 @@ export const getTransactions = async (network, address, pageKey, order, zero) =>
     } catch (err) {
         console.error(`Failed to fetch transaction history for ${address} on ${network}`, err)
     }
-}
+};
 
 export const getReceipt = async (network, hash) => {
     const fetchURL = `/api/receipt/${network}/${hash}`
@@ -49,5 +49,26 @@ export const getReceipt = async (network, hash) => {
         return data;
     } catch (err) {
         console.error(`Failed to fetch tx receipt for ${hash} on ${network}`)
+    }
+};
+
+export const getTokenTx = async (network, wAddress, tAddress, pageKey) => {
+    console.log(pageKey)
+    const page = pageKey ? true : false
+    const dir = "desc"
+    const zeroOpt = true
+    const fetchURL = page ? `/api/tokentx/${network}/${wAddress}/${tAddress}?outpgKey=${pageKey.outboundKey}&inpgKey=${pageKey.inboundKey}&order=${dir}&zero=${zeroOpt}` :
+        `/api/tokentx/${network}/${wAddress}/${tAddress}`
+    console.log(fetchURL)
+    try {
+        const response = await fetch(fetchURL);
+        if (!response.ok) throw new Error('token tx history fetch error');
+
+        const data = await response.json();
+
+        return data;
+
+    } catch (err) {
+        console.error(`Failed to fetch token (${tAddress}) tx history for ${wAddress} on ${network}`, err)
     }
 }
