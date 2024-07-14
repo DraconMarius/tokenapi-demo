@@ -32,8 +32,8 @@ function Help({ type }) {
                         <section className="modal-card-body ">
                             {info[type].img.map((item, index) => (
 
-                                <div className="box is-justify-content-center" key={index}>
-                                    <div className="block">
+                                <div className="box is-justify-content-center is-flex" key={index}>
+                                    <div className="block ">
 
                                         <p className="strong">{item.text}</p>
                                     </div>
