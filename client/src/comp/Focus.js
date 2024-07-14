@@ -57,8 +57,10 @@ function Focus({ net, hash, wallet, contractAddress, setOpen, icon }) {
             <div className="modal-background" />
             {(!isLoading && receipt?.receipt) ?
                 <div className="modal-card">
+                    <div className="container">
+                        <button className="delete is-pulled-right" aria-label="close" onClick={() => { setOpen(false) }}></button>
+                    </div>
                     <header className="modal-card-head">
-
                         <div className="container">
 
                             <span>Transaction receipt for:</span>
@@ -70,7 +72,7 @@ function Focus({ net, hash, wallet, contractAddress, setOpen, icon }) {
                                 hinge={true}
                                 value={`${receipt.receipt.transactionHash}`} />
                         </div>
-                        <button className="delete" aria-label="close" onClick={() => { setOpen(false) }}></button>
+
                     </header>
                     <section className="modal-card-body">
 
@@ -84,8 +86,7 @@ function Focus({ net, hash, wallet, contractAddress, setOpen, icon }) {
                                 <tr>
                                     <th className=""> Tx Index</th>
                                     {(receipt.receipt.transactionIndex) ? <td>{receipt.receipt.transactionIndex}</td> :
-                                        <td><div className="tag is-danger">Pending</div></td>
-                                    }
+                                        <td><div className="tag is-danger">Pending</div></td>}
                                 </tr>
                                 <tr>
                                     <th className=""> Block # </th>
@@ -142,20 +143,22 @@ function Focus({ net, hash, wallet, contractAddress, setOpen, icon }) {
                                     <img src={receipt?.descRes[0]?.mData?.logo || `https://placehold.co/48X48?text=${receipt?.descRes[0].mData?.name || receipt?.descRes[0].mData?.symbol || null}`} />
                                 </figure>
                                 <span> Token Transaction for: </span>
-                                <FlapDisplay
-                                    className="darBordered "
-                                    chars={Presets.ALPHANUM + ",.!"}
-                                    length={15}
-                                    timing={30}
-                                    hing={true}
-                                    value={receipt?.descRes[0]?.mData?.name || receipt?.descRes[0]?.mData?.symbol || null} />
-                                <FlapDisplay
-                                    className="darBordered "
-                                    chars={Presets.ALPHANUM + ",.!"}
-                                    length={42}
-                                    timing={30}
-                                    hinge={true}
-                                    value={`${receipt.tAddress}`} />
+                                <div className="container ">
+                                    <FlapDisplay
+                                        className="darBordered focusFlap"
+                                        chars={Presets.ALPHANUM + ",.!$"}
+                                        length={15}
+                                        timing={30}
+                                        hing={true}
+                                        value={receipt?.descRes[0]?.mData?.name || receipt?.descRes[0]?.mData?.symbol || null} />
+                                    <FlapDisplay
+                                        className="darBordered focusFlap"
+                                        chars={Presets.ALPHANUM + ",.!"}
+                                        length={42}
+                                        timing={30}
+                                        hinge={true}
+                                        value={`${receipt.tAddress}`} />
+                                </div>
                             </div>
                         </header>
                         <section className="modal-card-body">

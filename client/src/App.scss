@@ -60,3 +60,7 @@ $background-dark: url('./assets/alchemyD.png');
 .helpCard {
   width: 80vw;
 }
+
+.focusFlap {
+  font-size: clamp(10px, 1.8vw, 24px);
+}

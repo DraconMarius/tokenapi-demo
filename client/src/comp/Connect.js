@@ -80,14 +80,14 @@ function Connect() {
                         <button className="delete is-pulled-right" aria-label="close" onClick={() => setWalletDisp(false)}></button>
                     </div>
                     <header className="modal-card-head is-align-item-center pb-4 pt-5">
-                        <p className="modal-card-title is-align-item-center">
+                        <div className="modal-card-title is-align-item-center">
                             Detected {selectedProv ? `Address(es) in ${selectedProv.info.name}` : "Wallet(s)"}
                             <span className="icon-text">
                                 <figure className="image is-32x32 pl-2">
                                     <img src={selectedProv ? selectedProv.info.icon : walletIcon} alt="icon" />
                                 </figure>
                             </span>
-                        </p>
+                        </div>
                         {addresses ?
                             <button className="button is-pulled-right" onClick={() => clearSelected()}> {`Back`}</button> : <></>
                         }

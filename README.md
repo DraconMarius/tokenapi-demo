@@ -23,7 +23,7 @@
 
   ## Installation
 
-  ***This project is hosted on a heroku eco-dyno, when it is not being actively used it requires a bit extra start up time. This can be mitigated by upgrading to the next tier on heroku.***
+  ~~***This project is hosted on a heroku eco-dyno, when it is not being actively used it requires a bit extra start up time. This can be mitigated by upgrading to the next tier on heroku.***~~
   
   [Deployed Heroku Link](https://alchemy-tokenapi-3249c3de8b20.herokuapp.com/)
   
@@ -54,8 +54,15 @@
   > - *wallet address*
   > - *pageKey (optional)*
 
-
   > ![gif1](/client/src/assets/balance.gif)
+
+  > **Transactions related to focused Token**
+  > - *network*
+  > - *wallet address*
+  > - *contract address*
+
+  > ![gif2](/client/src/assets/tokenfocus.gif)
+
 
   > **All in/out bound transactions associated from a Contract on specific Network**
   > - *network*
@@ -65,15 +72,14 @@
   > - *exclude Zero value (optional)*
   > - *type of transactions: currently includes all type supported on mainnets [external, erc20, erc721, erc1155, specialnft]*
 
+  > ![gif3](/client/src/assets/txfilter.gif)
 
-  > ![gif2](/client/src/assets/txfilter.gif)
 
   > **Transaction Receipts**
   > - *network*
   > - *Transaction Hash*
-
   
-  > ![gif3](/client/src/assets/focus.gif)
+  > ![gif5](/client/src/assets/focus.gif)
 
 
   

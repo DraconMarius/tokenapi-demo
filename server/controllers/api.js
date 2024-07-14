@@ -407,7 +407,7 @@ router.get('/tokentx/:net/:wallet/:token', async (req, res) => {
             }
 
         } catch (err) {
-            console.error(`Failed to fetch Token Transaction in function`, err.message);
+            console.error(`Failed to fetch Token Transaction in function ${option}`, err.message);
             return { error: err.message }
         }
     }
