@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useSearch } from '../cont/searchContext';
 
+import { FlapDisplay, Presets } from 'react-split-flap-effect';
+
 import walletIcon from '../assets/walletConnect.png'
+import loadingIcon from '../assets/loading.gif'
 
 function Connect() {
     const { updateSearchParams } = useSearch();
-    const [address, setAddress] = useState('');
-    // const [selectedProv, setSelectedProv] = useState(null);
+    const [providers, setProviders] = useState([]);
+    const [addresses, setAddresses] = useState();
+    const [selectedProv, setSelectedProv] = useState();
     const [walletDisp, setWalletDisp] = useState(false);
     const [btnDisp, setBtnDisp] = useState(false);
-    const [providers, setProviders] = useState([]);
 
     useEffect(() => {
         const handleProviderAnnouncement = event => {
@@ -23,12 +26,11 @@ function Connect() {
         return () => window.removeEventListener('eip6963:announceProvider', handleProviderAnnouncement);
     }, []);
 
-    const handleConnect = async providerDetail => {
+    const handleConnect = async (account) => {
         try {
-            const accounts = await providerDetail.provider.request({ method: 'eth_requestAccounts' });
             updateSearchParams({
                 network: 'Eth',
-                walletAdd: accounts[0],
+                walletAdd: account,
                 zero: '',
                 pageKey: '',
                 txPageKey: {},
@@ -37,17 +39,31 @@ function Connect() {
                 currentTxKey: {},
                 type: 'balance',
                 dir: "desc",
-                zeroOpt: false,
+                zeroOpt: "false",
                 isNew: true
             })
-            // setSelectedProv(providerDetail);
             setWalletDisp(false);
         } catch (err) {
-            console.error("Error connecting to wallet provider", err);
+            console.error("Error updating param with selected account", err.message);
         }
     };
 
+    const handleSelectProvider = async (providerDetail) => {
+        try {
+            const accounts = await providerDetail.provider.request({ method: 'eth_requestAccounts' });
+            setAddresses(accounts)
+            setSelectedProv(providerDetail)
+        } catch (err) {
+            console.error("Error getting accounts from provider", err.message)
+        }
+    }
+    const clearSelected = () => {
+        setAddresses()
+        setSelectedProv()
+    }
+
     useEffect(() => {
+        console.log(providers)
         setBtnDisp(providers.length > 0);
     }, [providers]);
 
@@ -59,34 +75,65 @@ function Connect() {
 
             <div className={`modal ${walletDisp ? 'is-active' : ''}`}>
                 <div className="modal-background" onClick={() => setWalletDisp(false)}></div>
-                <div className="modal-card">
-                    <header className="modal-card-head">
-                        <p className="modal-card-title">Detected Wallet(s)</p>
-                        <button className="delete" aria-label="close" onClick={() => setWalletDisp(false)}></button>
+                <div className={`modal-card ${addresses ? `helpCard` : ""}`}>
+                    <div className="container">
+                        <button className="delete is-pulled-right" aria-label="close" onClick={() => setWalletDisp(false)}></button>
+                    </div>
+                    <header className="modal-card-head is-align-item-center pb-4 pt-5">
+                        <p className="modal-card-title is-align-item-center">
+                            Detected {selectedProv ? `Address(es) in ${selectedProv.info.name}` : "Wallet(s)"}
+                            <span className="icon-text">
+                                <figure className="image is-32x32 pl-2">
+                                    <img src={selectedProv ? selectedProv.info.icon : walletIcon} alt="icon" />
+                                </figure>
+                            </span>
+                        </p>
+                        {addresses ?
+                            <button className="button is-pulled-right" onClick={() => clearSelected()}> {`Back`}</button> : <></>
+                        }
                     </header>
                     <section className="modal-card-body">
-                        {providers.map((provider, index) => (
-                            <div className="box" key={index}>
-                                <article className="media">
-                                    <figure className="media-left">
-                                        <p className="image is-32x32">
-                                            <img src={provider.info.icon} alt={`${provider.info.name} icon`} />
-                                        </p>
-                                    </figure>
-                                    <div className="media-content">
-                                        <div className="content">
-                                            <button className="button is-link" onClick={() => handleConnect(provider)}>
-                                                {provider.info.name}
-                                            </button>
-                                        </div>
+                        {
+                            (providers && !selectedProv && !addresses) ?
+                                providers.map((provider, index) => (
+                                    <div className="box is-flex is-justify-content-center" key={index}>
+                                        <article className="media is-align-items-center">
+                                            <figure className="media-left">
+                                                <p className="image">
+                                                    <img src={provider.info.icon} alt={`${provider.info.name} icon`} />
+                                                </p>
+                                            </figure>
+                                            <div className="media-content">
+                                                <div className="content">
+                                                    <button className="button is-link" onClick={() => handleSelectProvider(provider)}>
+                                                        {provider.info.name}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </article>
                                     </div>
-                                </article>
-                            </div>
-                        ))}
+                                )
+                                ) : (providers && selectedProv && addresses) ?
+                                    addresses.map((address, index) => (
+                                        <div className="box is-justify-content-center is-flex" >
+                                            <div className="button is-info" onClick={() => handleConnect(address)} >
+                                                <FlapDisplay
+                                                    className="darBordered pt-1 "
+                                                    chars={Presets.ALPHANUM + ",.!"}
+                                                    length={42}
+                                                    timing={30}
+                                                    hinge={true}
+                                                    value={address} />
+                                            </div>
+                                        </div>
+                                    )) :
+
+                                    <></>
+                        }
                     </section>
-                </div>
-            </div>
-        </div>
+                </div >
+            </div >
+        </div >
     );
 }
 
