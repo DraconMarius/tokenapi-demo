@@ -61,7 +61,7 @@
   > - *wallet address*
   > - *contract address*
 
-  > ![gif2](/client/src/assets/tokenfocus.gif)
+  > ![gif2](/client/src/assets/tokenFocus.gif)
 
 
   > **All in/out bound transactions associated from a Contract on specific Network**

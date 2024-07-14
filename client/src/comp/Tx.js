@@ -104,11 +104,11 @@ function Tx({ apiRes, icon }) {
                                     <tr key={index} >
                                         {/* <th>{new Date(tx.metadata.blockTimestamp).toString()}</th> */}
                                         <td
-                                            className="has-tooltip-arrow "
+                                            className="has-tooltip-arrow has-tooltip-right has-tooltip-danger"
                                             data-tooltip={new Date(tx.metadata.blockTimestamp).toLocaleString()}>
                                             {tx.metadata.age}</td>
                                         <td
-                                            className="has-tooltip-arrow"
+                                            className="has-tooltip-arrow has-tooltip-right has-tooltip-link"
                                             data-tooltip={tx.hash}
                                             onClick={() => copyString(tx.hash)}>
                                             <span className="is-align-item-center">

@@ -26,10 +26,12 @@ $bronze: rgb(255, 178, 63);
 $fandango: hsla(323, 53%, 48%, 1);
 
 @use "bulma/sass" with ($primary: $risd-blue,
-  $link: $medium-slate-blue,
-  $warning: $bronze,
-  $info: $electric-purple);
+$link: $medium-slate-blue,
+$warning: $bronze,
+$info: $electric-purple);
 
+$tooltip-z-index: 1 ;
+@import "../node_modules/@creativebulma/bulma-tooltip/dist/bulma-tooltip.min.css";
 @import "../node_modules/bulma-list/sass/bulma-list.scss";
 
 #helpImg {

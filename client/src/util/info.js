@@ -5,7 +5,8 @@ import clipboard from '../assets/clipboard.gif';
 import scan from '../assets/scan.gif';
 import txfilter from '../assets/txfilter.gif';
 import lightDark from '../assets/lightDarkMode.gif';
-import focus from '../assets/focus.gif'
+import focus from '../assets/focus.gif';
+import tokenFocus from '../assets/tokenFocus.gif'
 
 
 export const info = {
@@ -28,11 +29,14 @@ export const info = {
         title: "Balance View:",
         img: [{
             src: balance,
-            text: 'Here you are able to view all tokens currently owned by clicking the token name located at the bottom of this screen'
+            text: 'Here you are able to view all tokens currently owned'
         },
         {
             src: scan,
             text: 'Clicking on the network logo to take you directly to the various blockchain explorer respectively'
+        }, {
+            src: tokenFocus,
+            text: 'By click on the `EYE`-con, you can view relevant transactions for the token selected'
         }
         ]
     },
@@ -54,11 +58,14 @@ export const info = {
         title: "Balance View:",
         img: [{
             src: balance,
-            text: 'Here you are able to view all tokens currently owned by clicking the token name located at the bottom of this screen'
+            text: 'Here you are able to view all tokens currently owned'
         },
         {
             src: scan,
             text: 'Clicking on the network logo to take you directly to the various blockchain explorer respectively'
+        }, {
+            src: tokenFocus,
+            text: 'By click on the `EYE`-con, you can view relevant transactions for the token selected'
         }
         ]
     },

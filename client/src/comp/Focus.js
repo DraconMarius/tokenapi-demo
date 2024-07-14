@@ -139,7 +139,7 @@ function Focus({ net, hash, wallet, contractAddress, setOpen, icon }) {
                         <header className="modal-card-head">
 
                             <div className="container modal-card-title">
-                                <figure className="image is-48x48">
+                                <figure className="image">
                                     <img src={receipt?.descRes[0]?.mData?.logo || `https://placehold.co/48X48?text=${receipt?.descRes[0].mData?.name || receipt?.descRes[0].mData?.symbol || null}`} />
                                 </figure>
                                 <span> Token Transaction for: </span>

@@ -24,10 +24,12 @@ function Help({ type }) {
                 <div className="modal is-active">
                     <div className="modal-background"></div>
                     <div className="modal-card helpCard">
+                        <div className="container">
+                            <button className="delete is-pulled-right" aria-label="close" onClick={() => setOpen(false)}></button>
+                        </div>
 
                         <header className="modal-card-head">
                             <p className="modal-card-title">{info[type].title}</p>
-                            <button className="delete" aria-label="close" onClick={() => setOpen(false)}></button>
                         </header>
                         <section className="modal-card-body ">
                             {info[type].img.map((item, index) => (
